@@ -13,7 +13,7 @@ use directories::ProjectDirs;
 
 
 const WINDOW_HEIGHT: f32 = 1000.;
-const WINDOW_WIDTH: f32 = 500.;
+const WINDOW_WIDTH: f32 = 600.;
 
 const UI_SPACE: f32 = 2.;
 const INDENT_SPACES: f32 = 24.;
