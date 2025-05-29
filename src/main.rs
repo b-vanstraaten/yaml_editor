@@ -11,9 +11,13 @@ use tokio::sync::mpsc;
 use rfd::FileDialog;
 use directories::ProjectDirs;
 
+
+const WINDOW_HEIGHT: f32 = 1000.;
+const WINDOW_WIDTH: f32 = 500.;
+
 const UI_SPACE: f32 = 2.;
 const INDENT_SPACES: f32 = 24.;
-const WIDTH_RAW: f32 = 0.35;
+const RAW_EDITOR_WIDTH_FRACTION: f32 = 0.5;
 const CONFIG_FILE_NAME: &str = "last_opened_file.txt";
 
 fn get_config_file_path() -> Option<std::path::PathBuf> {
@@ -53,7 +57,7 @@ impl YamlEditorApp {
         Self {
             content,
             file_path,
-            show_raw_editor: true,
+            show_raw_editor: false,
             dark_mode: true,
             scroll_marker_key: None,
             search_query: String::new(),
@@ -62,25 +66,33 @@ impl YamlEditorApp {
     }
 
     fn render_toolbar(&mut self, ui: &mut egui::Ui, ctx: &egui::Context) {
-        ui.horizontal(|ui| {
-            ui.label("📁 File:");
-            let path = self.file_path.lock().unwrap();
-            ui.label(egui::RichText::new(path.as_str()).monospace());
-            ui.separator();
-            if ui.button("📂 Change File").clicked() {
-                if let Some(path_buf) = FileDialog::new().add_filter("YAML", &["yaml", "yml"]).pick_file() {
-                    if let Ok(new_path) = path_buf.into_os_string().into_string() {
-                        let mut file_path = self.file_path.lock().unwrap();
-                        let mut content = self.content.lock().unwrap();
-                        *file_path = new_path.clone();
-                        *content = load_file(&new_path);
-                        save_file_path(&new_path);
-                        ctx.request_repaint();
+        ui.vertical(|ui| {
+
+            // Line 1: Buttons and checkboxes
+            ui.horizontal(|ui| {
+                if ui.button("📂 Change File").clicked() {
+                    if let Some(path_buf) = FileDialog::new().add_filter("YAML", &["yaml", "yml"]).pick_file() {
+                        if let Ok(new_path) = path_buf.into_os_string().into_string() {
+                            let mut file_path = self.file_path.lock().unwrap();
+                            let mut content = self.content.lock().unwrap();
+                            *file_path = new_path.clone();
+                            *content = load_file(&new_path);
+                            save_file_path(&new_path);
+                            ctx.request_repaint();
+                        }
                     }
                 }
-            }
-            ui.checkbox(&mut self.show_raw_editor, "📝 Show Raw Editor");
-            ui.checkbox(&mut self.dark_mode, "🌗 Dark Mode");
+                ui.checkbox(&mut self.show_raw_editor, "📝 Show Raw Editor");
+                ui.checkbox(&mut self.dark_mode, "🌗 Dark Mode");
+            });
+
+            // Line 2: File label and path
+            ui.horizontal(|ui| {
+                ui.label("📁 File:");
+                let path = self.file_path.lock().unwrap();
+                ui.label(egui::RichText::new(path.as_str()).monospace());
+            });
+
         });
     }
 
@@ -103,7 +115,7 @@ impl YamlEditorApp {
 
     fn render_raw_editor(&mut self, ui: &mut egui::Ui, ctx: &egui::Context, content: &mut String, width: f32, height: f32) {
         ui.allocate_ui_with_layout(
-            egui::Vec2::new(width * WIDTH_RAW, height),
+            egui::Vec2::new(width * RAW_EDITOR_WIDTH_FRACTION, height),
             egui::Layout::top_down(egui::Align::Min),
             |ui| {
                 ui.label("📝 Raw YAML Editor:");
@@ -135,7 +147,7 @@ impl YamlEditorApp {
                             let target_y = line_number as f32 * row_height;
 
                             // Set target scroll offset to center the line
-                            target_scroll_offset = Some(target_y - height * 0.3);
+                            target_scroll_offset = Some(target_y - height * 0.0);
                         }
                     }
                     self.search_triggered = false;
@@ -154,7 +166,7 @@ impl YamlEditorApp {
                 scroll_area.show(ui, |ui| {
                     let text_edit = egui::TextEdit::multiline(content)
                         .id(text_edit_id)
-                        .desired_width(width * WIDTH_RAW - 20.0)
+                        .desired_width(width * RAW_EDITOR_WIDTH_FRACTION - 20.0)
                         .font(egui::TextStyle::Monospace);
 
                     let response = ui.add(text_edit);
@@ -181,7 +193,7 @@ impl YamlEditorApp {
 
     fn render_collapsible_view(&mut self, ui: &mut egui::Ui, content: &mut String, width: f32, height: f32) {
         ui.allocate_ui_with_layout(
-            egui::Vec2::new(width * if self.show_raw_editor { 1. - WIDTH_RAW } else { 1.0 }, height),
+            egui::Vec2::new(width * if self.show_raw_editor { 1. - RAW_EDITOR_WIDTH_FRACTION } else { 1.0 }, height),
             egui::Layout::top_down(egui::Align::Min),
             |ui| {
                 ui.label("📂 Collapsible YAML View:");
@@ -267,7 +279,7 @@ async fn main() -> Result<(), eframe::Error> {
     eframe::run_native(
         "YAML Editor",
         eframe::NativeOptions {
-            viewport: egui::ViewportBuilder::default().with_inner_size([400.0, 1000.0]),
+            viewport: egui::ViewportBuilder::default().with_inner_size([WINDOW_WIDTH, WINDOW_HEIGHT]),
             ..Default::default()
         },
         Box::new(|_cc| {
