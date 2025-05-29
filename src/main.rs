@@ -25,6 +25,15 @@ fn get_config_file_path() -> Option<std::path::PathBuf> {
     })
 }
 
+fn find_text_position(text: &str, search_text: &str) -> Option<egui::text::CCursorRange> {
+    text.to_lowercase()
+        .find(&search_text.to_lowercase())
+        .map(|index| {
+            let cursor_pos = egui::text::CCursor::new(index);
+            egui::text::CCursorRange::one(cursor_pos)
+        })
+}
+
 fn load_saved_file_path() -> Option<String> {
     get_config_file_path()
         .and_then(|path| fs::read_to_string(path).ok())
@@ -46,6 +55,7 @@ struct YamlEditorApp {
     scroll_marker_key: Option<String>,
     search_query: String,
     search_triggered: bool,
+    current_scroll_offset: f32,  // Add this field
 }
 
 impl YamlEditorApp {
@@ -58,6 +68,7 @@ impl YamlEditorApp {
             scroll_marker_key: None,
             search_query: String::new(),
             search_triggered: false,
+            current_scroll_offset: 0.0,  // Initialize scroll position
         }
     }
 
@@ -101,7 +112,7 @@ impl YamlEditorApp {
         );
     }
 
-    fn render_raw_editor(&mut self, ui: &mut egui::Ui, ctx: &egui::Context, content: &str, width: f32, height: f32) {
+    fn render_raw_editor(&mut self, ui: &mut egui::Ui, ctx: &egui::Context, content: &mut String, width: f32, height: f32) {
         ui.allocate_ui_with_layout(
             egui::Vec2::new(width * WIDTH_RAW, height),
             egui::Layout::top_down(egui::Align::Min),
@@ -117,24 +128,58 @@ impl YamlEditorApp {
                     }
                 });
 
-                egui::ScrollArea::vertical().id_salt("raw_yaml_scroll")
+                let text_edit_id = ui.make_persistent_id("raw_editor_text");
+
+                // Compute scroll target rect ahead of time if triggered
+                let mut scroll_to_target: Option<egui::Rect> = None;
+                if self.search_triggered {
+                    if let Some(search_text) = &self.scroll_marker_key {
+                        if let Some(pos) = content.to_lowercase().find(&search_text.to_lowercase()) {
+                            let font_id = egui::TextStyle::Monospace.resolve(&ctx.style());
+                            let row_height = ctx.fonts(|f| f.row_height(&font_id));
+                            let preceding_text = &content[..pos];
+                            let line_number = preceding_text.chars().filter(|&c| c == '\n').count();
+                            let target_y = line_number as f32 * row_height;
+
+                            scroll_to_target = Some(egui::Rect::from_min_size(
+                                egui::pos2(0.0, target_y),
+                                egui::vec2(width * WIDTH_RAW, row_height * 2.0),
+                            ));
+                        }
+                    }
+                    self.search_triggered = false;
+                }
+
+                // ScrollArea rendering and optional scroll-to-match
+                egui::ScrollArea::vertical()
+                    .id_source("raw_editor_scroll")
+                    .auto_shrink([false; 2])
                     .show(ui, |ui| {
-                        for line in content.lines() {
-                            if self.search_triggered {
-                                if let Some(ref marker) = self.scroll_marker_key {
-                                    if line.contains(marker) {
-                                        ui.label(egui::RichText::new(line).background_color(egui::Color32::LIGHT_YELLOW)).scroll_to_me(Some(egui::Align::TOP));
-                                        self.search_triggered = false;
-                                        continue;
-                                    }
-                                }
+                        let text_edit = egui::TextEdit::multiline(content)
+                            .id(text_edit_id)
+                            .desired_width(width * WIDTH_RAW - 20.0)
+                            .font(egui::TextStyle::Monospace);
+
+                        let response = ui.add(text_edit);
+
+                        // Force scroll to matched rect (centered)
+                        if let Some(rect) = scroll_to_target.take() {
+                            ui.scroll_to_rect(rect, Some(egui::Align::Center));
+                            ctx.memory_mut(|mem| {
+                                mem.request_focus(text_edit_id);
+                            });
+                        }
+
+                        if response.changed() {
+                            if let Ok(_) = std::fs::write(&*self.file_path.lock().unwrap(), content) {
+                                ctx.request_repaint();
                             }
-                            ui.label(line);
                         }
                     });
             },
         );
     }
+
 
     fn render_collapsible_view(&mut self, ui: &mut egui::Ui, content: &mut String, width: f32, height: f32) {
         ui.allocate_ui_with_layout(
