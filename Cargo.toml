@@ -1,0 +1,26 @@
+[package]
+name = "yaml_viewer"
+version = "0.1.0"
+authors = ["Barnaby van Straaten"]
+edition = "2021"
+
+[dependencies]
+eframe = "0.31.1"
+serde_yaml = "0.9.34"
+notify = "8.0.0"
+tokio = { version = "1.45.1", features = ["full", "sync"] }
+rfd = "0.15.3"
+directories = "6.0.0"
+
+[package.metadata.bundle]
+name = "YAML Viewer"
+identifier = "com.barnaby.yamlviewer"
+icon = ["resources/icon.icns"]
+resources = ["resources/"]
+category = "DeveloperTool"
+short_description = "A collapsible + raw YAML viewer for quantum experiments"
+long_description = """
+YAML Viewer is a GUI application for exploring and editing YAML files interactively.
+Originally designed for managing configurations in quantum control experiments.
+"""
+

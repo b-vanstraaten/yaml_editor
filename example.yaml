@@ -1,0 +1,1570 @@
+_settings_meta:
+  qconstruct_version: 0.8.2
+  settings_datetime: 2025-05-06 15:49:13
+global:
+  padding: 4
+  align: 4
+  v_setpoints:
+    _ramp_times:
+      _zero-_02: 100
+      _02-_11_init: 50
+      _11_init-_11: 10
+      _11_init-_11_iso: 10
+      _11-_11_open: 50
+      _11_open-_11: 50
+      _11-_zero: 100
+      _zero-_11: 1000
+    _zero: {}
+    _02:
+      vNP: 5
+      vEP: 5
+      vWP: 5
+      vSP: 5
+      Joff1: -10
+      Joff2: 0
+      Joff3: 0
+      Joff4: 0
+      Joff5: 0
+      Joff6: 0
+      Joff7: 0
+      Joff8: 0
+      Joff9: 0
+      Joff10: 0
+      Joff11: 0
+      Joff12: 20
+      e14: 24
+      e48: 0
+      e59: -24
+      e26: 24
+      e37: 0
+      e710: 24
+      U14: 0
+      U48: 0
+      U59: 0
+      U26: 0
+      U37: 0
+      U710: 0
+    _11_init:
+      vNP: 5
+      vEP: 5
+      vWP: 5
+      vSP: 5
+      Joff1: 10
+      Joff2: 10
+      Joff3: 5
+      Joff4: 20
+      Joff5: 0
+      Joff6: 30
+      Joff7: 15
+      Joff8: 20
+      Joff9: 20
+      Joff10: 25
+      Joff11: 20
+      Joff12: 0
+      e14: 0
+      e48: 0
+      e59: 0
+      e26: 0
+      e37: 0
+      e710: 0
+      U14: 0
+      U48: 0
+      U59: 0
+      U26: 0
+      U37: 0
+      U710: 0
+    _11_iso:
+      vNP: 5
+      vEP: 5
+      vWP: 5
+      vSP: 5
+      Joff1: 10
+      Joff2: 10
+      Joff3: 10
+      Joff4: 20
+      Joff5: 10
+      Joff6: 30
+      Joff7: 15
+      Joff8: 20
+      Joff9: 20
+      Joff10: 25
+      Joff11: 20
+      Joff12: 10
+      e14: 0
+      e48: 0
+      e59: 0
+      e26: 0
+      e37: 0
+      e710: 0
+      U14: 0
+      U48: 0
+      U59: 0
+      U26: 0
+      U37: 0
+      U710: 0
+    _11: {}
+    _01: {}
+    _10: {}
+    _shuttle_AC: {}
+channels:
+  q1: q1
+  q2: q2
+  q3: q3
+  q4: q4
+  q5: q5
+  q6: q6
+  q7: q7
+  q8: q8
+  q9: q9
+  q10: q10
+  q11: q11
+  q12: q12
+  q13: q13
+  q14: q14
+  q15: q15
+  q16: q16
+  q17: q17
+  q18: q18
+  q19: q19
+  q20: q20
+  q21: q21
+  q22: q22
+  new_key: null
+sensors:
+  S_North:
+    min: -30
+    max: 50
+    bins: 201
+    rf_marker: ''
+  S_East:
+    min: -30
+    max: 50
+    bins: 201
+    rf_marker: ''
+  S_West:
+    min: -30
+    max: 35
+    bins: 201
+    rf_marker: ''
+  S_South:
+    min: -30
+    max: 30
+    bins: 201
+    rf_marker: ''
+q1:
+  x90:
+    t_pulse: 200
+    amplitude: 30
+    frequency: 82297658.0458005
+    phase_corrections: {}
+  mg_x90:
+    t_pulse: null
+    frequency: null
+    amplitudes: {}
+    phase_offsets: {}
+    phase_corrections: {}
+  new_key: null
+q2:
+  x90:
+    t_pulse: 100
+    amplitude: 9.388
+    frequency: 82297658.0458005
+    phase_corrections: {}
+  mg_x90:
+    t_pulse: null
+    frequency: null
+    amplitudes: {}
+    phase_offsets: {}
+    phase_corrections: {}
+q3:
+  x90:
+    t_pulse: 0
+    amplitude: 8
+    frequency: 133086885
+    phase_corrections: {}
+  mg_x90:
+    t_pulse: null
+    frequency: null
+    amplitudes: {}
+    phase_offsets: {}
+    phase_corrections: {}
+q4:
+  x90:
+    t_pulse: 1279
+    amplitude: 2
+    frequency: 142887670
+    phase_corrections: {}
+  mg_x90:
+    t_pulse: null
+    frequency: null
+    amplitudes: {}
+    phase_offsets: {}
+    phase_corrections: {}
+q5:
+  x90:
+    t_pulse: 500
+    amplitude: 4
+    frequency: 150000000.0
+    phase_corrections: {}
+  mg_x90:
+    t_pulse: 603
+    frequency: 305474029
+    amplitudes:
+      q5_B2: 5
+      q5_B3: 0
+      q5_B8: 0
+      q5_B9: 0
+    phase_offsets:
+      q5_B2: 0
+      q5_B3: 0
+      q5_B8: -180
+      q5_B9: 0
+    phase_corrections: {}
+q6:
+  x90:
+    t_pulse: 315.0
+    amplitude: 4
+    frequency: 82297658.0458005
+    phase_corrections: {}
+  mg_x90:
+    t_pulse: 50
+    frequency: 115730755
+    amplitudes:
+      q6_B4: 5
+      q6_B5: 5
+      q6_B10: 5
+      q6_B11: 5
+      q6_P6: 5
+    phase_offsets:
+      q6_B4: 4.233450679773644
+      q6_B5: 2.9028893101377893
+      q6_B10: 0.5406353908789607
+      q6_B11: -1.844148480225682
+      q6_P6: -0.0
+    phase_corrections: {}
+q7:
+  x90:
+    t_pulse: 424
+    amplitude: 4
+    frequency: 145488983
+    phase_corrections: {}
+  mg_x90:
+    t_pulse: null
+    frequency: null
+    amplitudes: {}
+    phase_offsets: {}
+    phase_corrections: {}
+q8:
+  x90:
+    t_pulse: 938
+    amplitude: 8
+    frequency: 179127312
+    phase_corrections: {}
+  mg_x90:
+    t_pulse: null
+    frequency: null
+    amplitudes: {}
+    phase_offsets: {}
+    phase_corrections: {}
+q9:
+  x90:
+    t_pulse: 2000
+    amplitude: 8
+    frequency: 29000000.0
+    phase_corrections: {}
+  mg_x90:
+    t_pulse: null
+    frequency: null
+    amplitudes: {}
+    phase_offsets: {}
+    phase_corrections: {}
+q10:
+  x90:
+    t_pulse: 28
+    amplitude: 12
+    frequency: 82297658.0458005
+    phase_corrections: {}
+q1,q4:
+  shuttle:
+    t_01: 10
+    t_10: null
+  v_setpoints:
+    _ramp_times:
+      _zero-_02: 1000.0
+      _02-_11: 100
+      _11-_11_init: 10
+      _11_init-read_point: 10
+      _11-read_point: 5000.0
+      read_point-_zero: 2000.0
+      read_point-_11: 5
+      _02-_AC: 2
+      _AC-_11: 2
+      _11-_AC: 2
+      _AC-read_point: 2
+      _11-_11_open: 50
+      _11_open-_11: 50
+      _11-_zero: 100
+      _zero-_11: 1000
+    _zero:
+      e14: 0
+      U14: 0
+      vWP: 0
+      J1: 0
+      J2: 0
+    _02:
+      e14: -28
+      U14: 0
+      vWP: 3
+      vWS: 0
+    _AC:
+      e14: 14
+      U14: 0
+      vWP: 0
+      vWS: 0
+      J1: 0
+      J2: 0
+    _11:
+      e14: 0
+      U14: 0
+      N1: 0
+      vWP: 3
+      J12: 0
+      J2: 0
+      J7: 10
+      J8: 0
+    read_point:
+      e14: -14.8
+      U14: 0
+      vWS: 0.0
+      vWP: 0.96
+    _01:
+      vWP: 1.0
+    _10: {}
+    _11_open:
+      e14: 0
+      U14: 5
+      J1: 0
+      Joff2: 25
+      Joff7: 25
+      Joff8: 25
+      vJ2: 0
+      vJ7: 0
+      vJ8: 0
+    _01_iso: {}
+    _10_iso: {}
+    _shuttle_AC: {}
+    _20: {}
+    _21: {}
+    _11_isopre_read_point: {}
+    _11_drive: {}
+    read_point_sim: {}
+    _02_sim: {}
+    _11_init: {}
+    _11_iso: {}
+    pre_read_point: {}
+  psb:
+    t_measure: 10000.0
+    t_settle: 1000.0
+    t_prewait: 0
+    thresholdN: 0
+    thresholdE: 0
+    thresholdW: 4.33
+    thresholdS: 0
+    invert_result: 0
+  crot:
+    pulse:
+      t_ramp_in: 50
+      t_pulse: 1100
+      t_ramp_out: 50
+      gate_voltages:
+        e14: 0
+        U14: 5
+        J1: -28
+        Joff2: 15
+        Joff7: 15
+        Joff8: 15
+    drive_zq1_q4:
+      t_pulse: 1066
+      amplitude: 8
+      frequency: 345_860_836
+    drive_q1_q4:
+      t_pulse: 819
+      amplitude: 6
+      frequency: 353_509_139
+  cz:
+    t_ramp_in: null
+    t_pulse: null
+    t_ramp_out: null
+    gate_voltages: {}
+q1,q5:
+  v_setpoints:
+    _ramp_times: {}
+    _zero: {}
+    _02: {}
+    _AC: {}
+    _11: {}
+    _20: {}
+    _21: {}
+    _shuttle_AC: {}
+    _11_isopre_read_point: {}
+    read_point: {}
+    _01: {}
+    _10: {}
+    _11_open: {}
+    _01_iso: {}
+    _10_iso: {}
+    _11_drive: {}
+    read_point_sim: {}
+    _02_sim: {}
+    _11_init: {}
+    _11_iso: {}
+    pre_read_point: {}
+  psb:
+    t_measure: null
+    t_settle: null
+    t_prewait: null
+    thresholdN: null
+    thresholdE: null
+    thresholdW: null
+    thresholdS: null
+    invert_result: 1
+  crot:
+    pulse:
+      t_ramp_in: null
+      t_pulse: null
+      t_ramp_out: null
+      gate_voltages: {}
+    drive_q1_q5:
+      t_pulse: null
+      amplitude: null
+      frequency: null
+    drive_zq1_q5:
+      t_pulse: null
+      amplitude: null
+      frequency: null
+  cz:
+    t_ramp_in: null
+    t_pulse: null
+    t_ramp_out: null
+    gate_voltages: {}
+  shuttle:
+    t_01: null
+    t_10: null
+q2,q5:
+  cz:
+    t_ramp_in: null
+    t_pulse: null
+    t_ramp_out: null
+    gate_voltages: {}
+  v_setpoints:
+    _ramp_times: {}
+    _zero: {}
+    _02: {}
+    _AC: {}
+    _11: {}
+    _20: {}
+    _21: {}
+    _shuttle_AC: {}
+    _11_isopre_read_point: {}
+    read_point: {}
+    _01: {}
+    _10: {}
+    _11_open: {}
+    _01_iso: {}
+    _10_iso: {}
+    _11_drive: {}
+    read_point_sim: {}
+    _02_sim: {}
+    _11_init: {}
+    _11_iso: {}
+    pre_read_point: {}
+  psb:
+    t_measure: null
+    t_settle: null
+    t_prewait: null
+    thresholdN: null
+    thresholdE: null
+    thresholdW: null
+    thresholdS: null
+    invert_result: 0
+  crot:
+    pulse:
+      t_ramp_in: null
+      t_pulse: null
+      t_ramp_out: null
+      gate_voltages: {}
+    drive_q2_q5:
+      t_pulse: null
+      amplitude: null
+      frequency: null
+    drive_zq2_q5:
+      t_pulse: null
+      amplitude: null
+      frequency: null
+  shuttle:
+    t_01: null
+    t_10: null
+q2,q6:
+  cz:
+    t_ramp_in: null
+    t_pulse: null
+    t_ramp_out: null
+    gate_voltages: {}
+  v_setpoints:
+    _ramp_times:
+      _zero-_AC: 2000.0
+      _AC-_02: 5
+      _zero-_02: 2000
+      _02-_11: 200
+      _11-read_point: 100
+      _11-pre_read_point: 100
+      pre_read_point-read_point: 5
+      read_point-pre_read_point: 2000
+      pre_read_point-_zero: 2000
+      read_point-_zero: 2000
+      _10-_shuttle_AC: 2
+      _shuttle_AC-_10: 2
+      _01-_shuttle_AC: 2
+      _shuttle_AC-_01: 2
+      _zero-_01: 2
+      _zero-_10: 2
+      _10-_zero: 2
+      _01-_zero: 2
+      _02-_AC: 2
+      _AC-_11: 5
+      _11-_AC: 100
+      _AC-read_point: 5
+      _11-_zero: 2
+      _zero-_11: 2
+      _zero-read_point: 2
+      _02-read_point: 500
+      _11-_11_open: 100
+      _11_open-_11: 100
+    _zero:
+      e26: 0
+      U26: 0
+      J3: 0
+      J4: 0
+      J10: 0
+      vNP: 3
+      vSP: 4
+    _02:
+      e26: 24
+      U26: 0
+      J3: 0
+      J4: 0
+      vNP: 3
+      vSP: 4
+    _AC:
+      e26: 19.5
+      U26: -2
+      J4: 15
+      vNP: -0.6
+    _11:
+      e26: 0
+      U26: 0
+      Joff3: 5
+      Joff4: 20
+      Joff9: 12
+      Joff11: 20
+      Joff5: 0
+      vNP: 3
+      vSP: 4
+      Joff10: 20
+    _20: {}
+    _21: {}
+    read_point:
+      e26: -13
+      U26: -1
+      Joff4: 15
+      vNP: -1.12
+      vSP: 0
+    _01: {}
+    _shuttle_AC: {}
+    _10: {}
+    _11_open:
+      e26: 0
+      U26: -1
+      J4: 14
+      J9: 12
+      J11: 12
+      vNP: 3
+      J10: -8
+      J3: 0
+    _01_iso: {}
+    _10_iso: {}
+    _11_isopre_read_point: {}
+    _11_drive: {}
+    read_point_sim: {}
+    _02_sim: {}
+    _11_init: {}
+    _11_iso: {}
+    pre_read_point: {}
+  psb:
+    t_measure: 10000.0
+    t_settle: 500
+    t_prewait: 0
+    thresholdN: 10
+    thresholdE: 0
+    thresholdW: 0
+    thresholdS: 0
+    invert_result: 0
+  crot:
+    pulse:
+      t_ramp_in: 500
+      t_pulse: 2000.0
+      t_ramp_out: 500
+      gate_voltages:
+        J4: -32
+    drive_q2_q6:
+      t_pulse: 2000.0
+      amplitude: 4
+      frequency: 300000000.0
+    drive_zq2_q6:
+      t_pulse: null
+      amplitude: null
+      frequency: null
+  shuttle:
+    t_01: null
+    t_10: null
+q3,q6:
+  cz:
+    t_ramp_in: null
+    t_pulse: null
+    t_ramp_out: null
+    gate_voltages: {}
+  v_setpoints:
+    _ramp_times:
+      _10-_shuttle_AC: 100
+      _shuttle_AC-_10: 100
+      _01-_shuttle_AC: 100
+      _shuttle_AC-_01: 100
+      _AC-_01: 10
+      _01-_AC: 10
+      _10-_01: 5
+      _01-_10: 5
+      _zero-_01: 5
+      _zero-_10: 5
+      _10-_zero: 5
+      _01-_zero: 5
+    _zero:
+      e36: 0
+      U36: 0
+      J4: 0
+      J5: 0
+      J10: 0
+      J11: 0
+    _02: {}
+    _AC:
+      e36: -25
+      U36: 2
+      J5: 0
+      P6: 0
+    _11: {}
+    _20: {}
+    _21: {}
+    _10:
+      e36: 0
+      U36: 2
+      J5: -15
+    _shuttle_AC:
+      e36: -13
+      U36: 2
+      J5: -20
+    _01:
+      e36: -25
+      U36: 2
+      J4: 0
+      J5: 0
+      J10: 0
+      J11: 0
+      P6: 0
+    _11_open: {}
+    _01_iso: {}
+    _10_iso: {}
+    _11_drive: {}
+    read_point_sim: {}
+    _02_sim: {}
+    _11_init: {}
+    _11_iso: {}
+    read_point: {}
+    pre_read_point: {}
+  psb:
+    t_measure: null
+    t_settle: null
+    t_prewait: null
+    thresholdN: null
+    thresholdE: null
+    thresholdW: null
+    thresholdS: null
+    invert_result: 0
+  crot:
+    pulse:
+      t_ramp_in: null
+      t_pulse: null
+      t_ramp_out: null
+      gate_voltages: {}
+    drive_q3_q6:
+      t_pulse: null
+      amplitude: null
+      frequency: null
+    drive_zq3_q6:
+      t_pulse: null
+      amplitude: null
+      frequency: null
+  shuttle:
+    t_01: 1000
+    t_10: 1000
+q3,q7:
+  cz:
+    t_ramp_in: null
+    t_pulse: null
+    t_ramp_out: null
+    gate_voltages: {}
+  v_setpoints:
+    _ramp_times:
+      _02-_zero: 4000.0
+      _zero-read_point: 4000.0
+      _zero-_11: 10
+      _11-_zero: 10
+      _zero-_02: 1000
+      _02-_11: 8000.0
+      _11-_11_init: 10
+      _11-read_point: 8000.0
+      _11_init-read_point: 10
+      read_point-_zero: 2000
+      _zero-_01: 5
+      _zero-_10: 5
+      _10-_zero: 5
+      _01-_zero: 5
+      _11-_11_open: 100
+      _11_open-_11: 100
+    _zero:
+      e37: 0
+      U37: 0
+      J5: 0
+      J6: 0
+      vEP: 3
+    read_point:
+      e37: 12.2
+      U37: 0
+      vEP: -0.32
+      J6: 0
+    _02:
+      e37: 13.6
+      U37: 0.5
+      vEP: 3
+      J6: 0
+    _11:
+      e37: 0
+      U37: 0
+      J6: 30
+      J12: 0
+      vEP: 3
+    _01:
+      e37: 0
+      U37: 0
+      J5: 0
+      J6: 0
+      J12: 0
+    _shuttle_AC:
+      e37: -13
+      U37: -2
+    _10:
+      e37: -20
+      U37: 0
+      J6: 0
+    _20: {}
+    _21: {}
+    _11_isopre_read_point: {}
+    _11_open:
+      e37: 0
+      U37: 0
+      vEP: 0
+      J6: 0
+      J5: -15
+      J12: 0
+    _01_iso: {}
+    _10_iso: {}
+    _11_drive: {}
+    read_point_sim: {}
+    _02_sim: {}
+    _11_iso: {}
+    pre_read_point: {}
+    _11_init: {}
+    _AC: {}
+  psb:
+    t_settle: 500.0
+    t_measure: 10000.0
+    thresholdN: 0
+    thresholdE: 18.27
+    thresholdW: 0
+    thresholdS: 0
+    invert_result: 0
+    t_prewait: 0.0
+  crot:
+    pulse:
+      t_ramp_in: 10
+      t_pulse: 680
+      t_ramp_out: 10
+      gate_voltages:
+        J6: -25
+        J5: 10
+        J12: 10
+        vEP: 3
+    drive_q3_q7:
+      t_pulse: 666
+      amplitude: 10
+      frequency: 352725122
+    drive_zq3_q7:
+      t_pulse: null
+      amplitude: null
+      frequency: null
+  shuttle:
+    t_01: 10
+    t_10: 10
+q4,q8:
+  cz:
+    t_ramp_in: null
+    t_pulse: null
+    t_ramp_out: null
+    gate_voltages: {}
+  v_setpoints:
+    _ramp_times:
+      _zero-_02: 2000.0
+      _02-_11: 3000
+      _02-_11_init: 2093.24
+      _11-_zero: 100
+      _11-read_point: 4000
+      _11_init-read_point: 604.56
+      read_point-_zero: 100
+      _02-_AC: 1811.64
+      _AC-_11: 986.26
+      _AC-_11_init: 1237.86
+      _11_init-_11: 4203.77
+      _11-_11_init: 1000
+      _11-_AC: 4000
+      _AC_readpoint: 4000
+      _AC-read_point: 10
+      _11-_11_open: 10
+      _11_open-_11: 10
+      _11-pre_read_point: 6770.92
+      pre_read_point-read_point: 2022.5
+    _zero:
+      e48: 0
+      U48: 0
+      vWP: 0
+      J1: 0
+      J7: 0
+    _02:
+      e48: -25
+      U48: -1
+      vWP: 0.6
+      J7: -30
+    _AC:
+      e48: -14
+      U48: 0
+      J7: -20
+      vWP: 0
+    _11:
+      e48: 0
+      U48: 0
+      J7: 30
+      vWP: 3
+    read_point:
+      e48: -14.05
+      U48: -4.14
+      J7: -9.02
+      vWP: -0.32
+    _21: {}
+    _shuttle_AC:
+      e48: 12
+      U48: 0
+      J7: 0
+    _01:
+      e48: 25
+      U48: 0
+      J7: 0
+    _10:
+      e48: 0
+      U48: 0
+      J7: 0
+      J1: 10
+    _11_open:
+      e48: -8
+      U48: 0
+      J7: 25
+      J8: 0
+      J1: 0
+      vWP: 3
+    _01_iso: {}
+    _10_iso: {}
+    _20: {}
+    _11_drive: {}
+    read_point_sim: {}
+    _02_sim: {}
+    _11_iso: {}
+    pre_read_point: {}
+    _11_init:
+      e48: 4.5
+      U48: 5.93
+      e58: 0
+      J7: -13.95
+      J8: 0
+      vWP: 3
+  psb:
+    t_settle: 2000.0
+    t_measure: 10000.0
+    t_prewait: 0
+    thresholdN: 0
+    thresholdE: 0
+    thresholdW: 7.38
+    thresholdS: 0
+    invert_result: 0
+  crot:
+    pulse:
+      t_ramp_in: 100
+      t_pulse: 436
+      t_ramp_out: 100
+      gate_voltages:
+        Joff1: -15
+        Joff7: -10
+        Joff8: -20
+        vJ1: 10
+        vJ7: -20
+        vJ8: 10
+    drive_zq4_q8:
+      t_pulse: 438
+      amplitude: 6
+      frequency: 340_453_858
+    drive_q4_q8:
+      t_pulse: 337
+      amplitude: 6
+      frequency: 346_954_265
+  shuttle:
+    t_01: null
+    t_10: null
+q5,q8:
+  cz:
+    t_ramp_in: null
+    t_pulse: null
+    t_ramp_out: null
+    gate_voltages: {}
+  v_setpoints:
+    _ramp_times:
+      _10-_shuttle_AC: 100
+      _shuttle_AC-_10: 100
+      _01-_shuttle_AC: 100
+      _shuttle_AC-_01: 100
+      _01-_10: 100
+      _10-_01: 100
+      _zero-_01: 5
+      _zero-_10: 5
+      _10-_zero: 5
+      _01-_zero: 5
+    _zero:
+      e58: 0
+      U58: 0
+      J8: 0
+    _02:
+      e58: 24
+    _AC: {}
+    _11: {}
+    _20: {}
+    _21: {}
+    _01:
+      e58: 0
+      U58: 0
+    _shuttle_AC:
+      e58: 13
+      U58: -3.69
+      J8: -20
+    _10:
+      e58: 30
+      U58: 5
+      J8: 0
+      J3: 0
+    read_point: {}
+    _11_isopre_read_point: {}
+    _11_open: {}
+    _01_iso: {}
+    _10_iso: {}
+    _11_drive: {}
+    read_point_sim: {}
+    _02_sim: {}
+    _11_init: {}
+    _11_iso: {}
+    pre_read_point: {}
+  psb:
+    t_measure: null
+    t_settle: null
+    t_prewait: null
+    thresholdN: null
+    thresholdE: null
+    thresholdW: null
+    thresholdS: null
+    invert_result: 0
+  crot:
+    pulse:
+      t_ramp_in: 20
+      t_pulse: 400
+      t_ramp_out: 20
+      gate_voltages:
+        J2: 12
+        J8: -33
+    drive_q5_q8:
+      t_pulse: 360
+      amplitude: 10
+      frequency: 370000000.0
+    drive_zq5_q8:
+      t_pulse: null
+      amplitude: null
+      frequency: null
+  shuttle:
+    t_01: 10
+    t_10: 10
+q5,q9:
+  cz:
+    t_ramp_in: null
+    t_pulse: null
+    t_ramp_out: null
+    gate_voltages: {}
+  v_setpoints:
+    _ramp_times:
+      _zero-_AC: 1000
+      _zero-_02: 1000
+      _02-_11: 100
+      _11-read_point: 200
+      _AC-_02: 500
+      _11-pre_read_point: 100
+      pre_read_point-read_point: 5
+      read_point-pre_read_point: 2000
+      pre_read_point-_zero: 2000
+      read_point-_zero: 2000
+      _10-_shuttle_AC: 2
+      _shuttle_AC-_10: 2
+      _01-_shuttle_AC: 2
+      _shuttle_AC-_01: 2
+      _zero-_01: 2
+      _zero-_10: 2
+      _10-_zero: 2
+      _01-_zero: 2
+      _02-_AC: 3
+      _AC-_11: 3
+      _11-_AC: 2
+      _AC-read_point: 2
+      _11-_zero: 2
+      _zero-_11: 2
+      _zero-read_point: 2
+      _11-_11_open: 5
+      _11_open-_11: 5
+    _zero:
+      e59: 0
+      U59: 0
+      J9: 0
+      J10: 0
+      vSP: 0
+    _01: {}
+    _shuttle_AC: {}
+    _10: {}
+    _02:
+      e59: 25
+      U59: 0
+      J9: 0
+      J3: 0
+      J10: 0
+      vSP: 5
+    _11:
+      e59: 0
+      U59: 0
+      Joff2: 0
+      Joff3: 0
+      Joff8: 0
+      Joff9: 0
+      Joff10: 10
+      vSP: 5
+    _11_drive:
+      e59: 0
+      U59: -1
+      Joff2: 10
+      Joff3: 0
+      Joff4: 0
+      Joff8: 10
+      Joff9: 15
+      Joff10: 10
+      vSP: 5
+      vP2: -3
+    read_point:
+      e59: 13
+      U59: 0.8
+      Joff2: 0
+      Joff3: 0
+      Joff8: 0
+      Joff9: 0
+      Joff10: 20
+      vSP: -0.8
+    _11_open:
+      e59: 0
+      U59: -1
+      Joff2: 0
+      Joff9: 6
+      Joff8: 30
+      Joff10: 15
+      Joff4: 0
+      Joff3: 10
+      vSP: 5
+    _AC:
+      e59: 11
+      U59: 1
+      J9: 10
+      J10: 0
+      vSP: 0
+    _01_iso: {}
+    _10_iso: {}
+    _20: {}
+    _21: {}
+    _11_isopre_read_point: {}
+    read_point_sim: {}
+    _02_sim: {}
+    _11_init: {}
+    _11_iso: {}
+    pre_read_point: {}
+  psb:
+    t_settle: 3000
+    t_measure: 10000.0
+    thresholdN: 0
+    thresholdE: 0
+    thresholdW: 0
+    thresholdS: 2
+    invert_result: 0
+    t_prewait: 0.0
+  crot:
+    pulse:
+      t_ramp_in: 20
+      t_pulse: 800
+      t_ramp_out: 20
+      gate_voltages:
+        J9: -35
+    drive_q5_q9:
+      t_pulse: 580
+      amplitude: 8
+      frequency: 310000000.0
+    drive_zq5_q9:
+      t_pulse: null
+      amplitude: null
+      frequency: null
+  shuttle:
+    t_01: 10
+    t_10: null
+q6,q9:
+  cz:
+    t_ramp_in: null
+    t_pulse: null
+    t_ramp_out: null
+    gate_voltages: {}
+  v_setpoints:
+    _ramp_times:
+      _zero-_AC: 1000
+      _zero-_02: 1000
+      _02-_11: 25
+      _AC-_02: 10
+      _11-read_point: 36
+      _11-pre_read_point: 100
+      pre_read_point-read_point: 5
+      read_point-pre_read_point: 2000
+      pre_read_point-_zero: 2000
+      read_point-_zero: 2000
+      _10-_shuttle_AC: 100
+      _shuttle_AC-_10: 100
+      _01-_shuttle_AC: 100
+      _shuttle_AC-_01: 100
+      _zero-_01: 2
+      _zero-_10: 2
+      _10-_zero: 2
+      _01-_zero: 2
+      _02-_AC: 2
+      _AC-_11: 100
+      _11-_AC: 2
+      _AC-read_point: 2
+      _11-_zero: 10
+      _zero-_11: 10
+      _zero-read_point: 2
+      _11-_10: 200
+      _10-_11: 200
+      _11-_01: 200
+      _01-_11: 200
+      _01-_10: 200
+      _10-_01: 200
+    _zero:
+      e69: 0
+      U69: 0
+      J5: 0
+      J10: 0
+      vSP: 5
+    pre_read_point:
+      e69: 14
+      U69: 0
+      J9: 0
+      J10: 0
+    read_point:
+      e69: 12.3
+      U69: -0.4
+      Joff10: -1
+      Joff5: 0
+      vSP: -1.6
+    _02:
+      e69: 25
+      U69: -8
+      Joff10: 20
+      Joff5: -8
+      vSP: 5
+    _11:
+      e69: 0
+      U69: 0
+      vSP: 5
+      Joff10: 0
+      Joff4: 2
+      Joff11: 10
+    _AC: {}
+    _10:
+      e69: 0
+      U69: 3
+      J10: -30
+      vSP: 5
+    _shuttle_AC:
+      e69: 10
+      U69: 3
+      J9: 0
+      J10: -30
+      vSP: 5
+    _01:
+      e69: 20
+      U69: 3
+      J10: -30
+      vSP: 5
+    _20: {}
+    _21: {}
+    _11_isopre_read_point: {}
+    _11_open: {}
+    _01_iso: {}
+    _10_iso: {}
+    _11_drive: {}
+    read_point_sim: {}
+    _02_sim: {}
+    _11_init: {}
+    _11_iso: {}
+  psb:
+    t_settle: 50
+    t_measure: 12000.0
+    thresholdN: 30
+    thresholdE: 14
+    thresholdW: 35
+    thresholdS: 7
+    invert_result: 0
+    t_prewait: 0.0
+  crot:
+    pulse:
+      t_ramp_in: null
+      t_pulse: null
+      t_ramp_out: null
+      gate_voltages: {}
+    drive_q6_q9:
+      t_pulse: null
+      amplitude: null
+      frequency: null
+    drive_zq6_q9:
+      t_pulse: null
+      amplitude: null
+      frequency: null
+  shuttle:
+    t_01: null
+    t_10: null
+q6,q10:
+  cz:
+    t_ramp_in: null
+    t_pulse: null
+    t_ramp_out: null
+    gate_voltages: {}
+  v_setpoints:
+    _ramp_times:
+      _zero-_AC: 1000
+      _AC-_02: 1000
+      _02-_AC: 20
+      _AC-_11: 20
+      _zero-_02: 10
+      _02-_11: 5
+      _01-_10: 5
+      _10-_01: 5
+      _11-pre_read_point: 10
+      pre_read_point-read_point: 5
+      _11-read_point: 5
+      read_point-pre_read_point: 10
+      pre_read_point-_zero: 2000
+      _10-_shuttle_AC: 5
+      _shuttle_AC-_10: 5
+      _01-_shuttle_AC: 5
+      _shuttle_AC-_01: 5
+      _zero-_01: 5
+      _zero-_10: 5
+      _10-_zero: 5
+      _01-_zero: 5
+      _zero-_11: 5
+    _zero:
+      e610: 0
+      U610: 0
+      J4: 0
+      J5: 0
+      J11: 0
+    _02: {}
+    _AC: {}
+    _11: {}
+    _20: {}
+    _21: {}
+    read_point: {}
+    _01:
+      e610: 0
+      U610: 0
+      J4: 0
+      J5: 0
+      J11: 0
+    _shuttle_AC:
+      e610: 14
+      U610: 4
+      J4: 0
+      J5: 0
+      J11: -20
+    _10:
+      e610: 30
+      U610: 0
+      J4: 0
+      J5: 0
+      J11: 0
+    _11_open: {}
+    _01_iso: {}
+    _10_iso: {}
+    _11_isopre_read_point: {}
+    _11_drive: {}
+    read_point_sim: {}
+    _02_sim: {}
+    _11_init: {}
+    _11_iso: {}
+    pre_read_point: {}
+  psb:
+    t_measure: null
+    t_settle: null
+    t_prewait: null
+    thresholdN: null
+    thresholdE: null
+    thresholdW: null
+    thresholdS: null
+    invert_result: 0
+  crot:
+    pulse:
+      t_ramp_in: 50
+      t_pulse: 400
+      t_ramp_out: 50
+      gate_voltages:
+        J11: -35
+        J4: 0
+        J10: 0
+        J12: 0
+    drive_q6_q10:
+      t_pulse: 380
+      amplitude: 8
+      frequency: 350000000.0
+    drive_zq6_q10:
+      t_pulse: null
+      amplitude: null
+      frequency: null
+  shuttle:
+    t_01: null
+    t_10: null
+q7,q10:
+  cz:
+    t_ramp_in: null
+    t_pulse: null
+    t_ramp_out: null
+    gate_voltages: {}
+  v_setpoints:
+    _ramp_times:
+      _02-_zero: 4000.0
+      _zero-read_point: 4000.0
+      _zero-_11: 100
+      _zero-_AC: 1000
+      _AC-_02: 1000
+      _02-_AC: 20
+      _AC-_11: 20
+      _zero-_02: 1000
+      _02-_11: 500
+      _11-read_point: 500
+      _01-_10: 2
+      _10-_01: 2
+      _11-pre_read_point: 10
+      pre_read_point-read_point: 5
+      read_point-pre_read_point: 10
+      pre_read_point-_zero: 2000
+      _10-_shuttle_AC: 5
+      _shuttle_AC-_10: 100
+      _01-_shuttle_AC: 5
+      _shuttle_AC-_01: 5
+      _zero-_01: 5
+      _zero-_10: 5
+      _10-_zero: 5
+      _01-_zero: 5
+      _01-_02: 1000.0
+      _02-_01: 1000.0
+      read_point-_zero: 5
+      _11-_11_open: 100
+      _11_open-_11: 100
+      _11-_zero: 100
+    _zero:
+      e710: 1
+      U710: 0
+      vEP: 0
+      J6: 0
+      J11: 0
+      J12: 0
+    _01:
+      e710: -15
+      U710: 0
+    _shuttle_AC:
+      e710: 8
+      U710: 4
+      vEP: 3
+      J6: 0
+      J11: 0
+      J12: -25
+    _02:
+      e710: -20
+      U710: 0
+      vEP: 0
+    read_point:
+      e710: -12.8
+      U710: 0
+      vEP: 0.12
+      J12: 3
+    _AC: {}
+    _11:
+      e710: 0
+      U710: 0
+      vEP: 0
+      J12: 30
+      J6: 30
+    _20: {}
+    _21: {}
+    _11_open:
+      e710: 0
+      U710: 0
+      vEP: 0
+    _01_iso: {}
+    _10_iso: {}
+    _11_isopre_read_point: {}
+    _11_drive: {}
+    read_point_sim: {}
+    _02_sim: {}
+    _11_init: {}
+    _11_iso: {}
+    _10:
+      e710: 0
+      U710: 0
+    pre_read_point: {}
+  psb:
+    t_measure: 10000.0
+    thresholdN: 0
+    thresholdE: 3.5
+    thresholdW: 0
+    thresholdS: -5.2
+    invert_result: 0
+    t_settle: 1000.0
+    t_prewait: 0
+  crot:
+    pulse:
+      t_ramp_in: 10
+      t_pulse: 425
+      t_ramp_out: 10
+      gate_voltages:
+        J11: 40
+        J12: -27
+    drive_q7_q10:
+      t_pulse: 418
+      amplitude: 10
+      frequency: 363000000.0
+    drive_zq7_q10:
+      t_pulse: null
+      amplitude: null
+      frequency: null
+  shuttle:
+    t_01: 10
+    t_10: null
+q11:
+  x90:
+    t_pulse: 315.0
+    amplitude: 10.792
+    frequency: 82297658.0458005
+    phase_corrections: {}
+q12:
+  x90:
+    t_pulse: 315.0
+    amplitude: 22.849
+    frequency: 82297658.0458005
+    phase_corrections: {}
+q13:
+  x90:
+    t_pulse: 315.0
+    amplitude: 10.792
+    frequency: 82297658.0458005
+    phase_corrections: {}
+q14:
+  x90:
+    t_pulse: 315.0
+    amplitude: 10.792
+    frequency: 82297658.0458005
+    phase_corrections: {}
+q15:
+  x90:
+    t_pulse: 315.0
+    amplitude: 10.792
+    frequency: 82297658.0458005
+    phase_corrections: {}
+q16:
+  x90:
+    t_pulse: 300
+    amplitude: 10.792
+    frequency: 82297658
+    phase_corrections: {}
+q17:
+  x90:
+    t_pulse: 31
+    amplitude: 16.382
+    frequency: 82297658.0458005
+    phase_corrections: {}
+q18:
+  x90:
+    t_pulse: 500
+    amplitude: 8.713625257018014
+    frequency: 52160163
+    phase_corrections: {}
+q19:
+  x90:
+    t_pulse: 315.0
+    amplitude: 10.792
+    frequency: 82297658.0458005
+    phase_corrections: {}
+q20:
+  x90:
+    t_pulse: 315.0
+    amplitude: 10.792
+    frequency: 82297658.0458005
+    phase_corrections: {}
+q21:
+  x90:
+    t_pulse: 315.0
+    amplitude: 10.792
+    frequency: 82297658.0458005
+    phase_corrections: {}
+q22:
+  x90:
+    t_pulse: 315.0
+    amplitude: 10.792
+    frequency: 82297658.0458005
+    phase_corrections: {}
