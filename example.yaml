@@ -1,11 +1,9 @@
-
 _settings_meta:
   qconstruct_version: 0.8.1
   settings_datetime: 2025-05-06 15:49:13
 global:
-  padding: 2
-  align: 4
-
+  padding: 4
+  align: 2
   v_setpoints:
     _ramp_times:
       _zero-_02: 100
@@ -1570,19 +1568,3 @@ q22:
     amplitude: 10.792
     frequency: 82297658.0458005
     phase_corrections: {}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                                    

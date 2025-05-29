@@ -11,7 +11,6 @@ use tokio::sync::mpsc;
 use rfd::FileDialog;
 use directories::ProjectDirs;
 
-
 const WINDOW_HEIGHT: f32 = 1000.;
 const WINDOW_WIDTH: f32 = 600.;
 
@@ -23,7 +22,6 @@ const CONFIG_FILE_NAME: &str = "last_opened_file.txt";
 fn get_config_file_path() -> Option<std::path::PathBuf> {
     ProjectDirs::from("org", "QuantumTools", "YamlEditor").map(|proj_dirs| {
         let dir = proj_dirs.config_dir();
-        // Attempt to create the directory, ignore error if it fails
         let _ = fs::create_dir_all(dir);
         dir.join(CONFIG_FILE_NAME)
     })
@@ -273,8 +271,10 @@ async fn main() -> Result<(), eframe::Error> {
     let (file_path, content) = init_file_state(&file_path);
     let (tx, rx) = mpsc::channel(100);
 
-    init_file_watcher(tx, &file_path);
-    spawn_file_watcher(rx, Arc::clone(&file_path), Arc::clone(&content));
+    init_file_watcher(tx.clone(), &file_path);
+    // Wrap the receiver in Arc<Mutex<>> for GUI, and clone for watcher
+    let rx = rx; // plain receiver
+    spawn_file_watcher(rx, file_path.clone(), content.clone());
 
     eframe::run_native(
         "YAML Editor",
@@ -299,16 +299,22 @@ fn load_file(path: &str) -> String {
 }
 
 fn init_file_watcher(tx: mpsc::Sender<Event>, file_path: &Arc<Mutex<String>>) {
-    let mut watcher = RecommendedWatcher::new(
-        move |res: Result<Event, _>| {
+    let path = file_path.lock().unwrap().clone();
+    std::thread::spawn(move || {
+        let (notify_tx, notify_rx) = std::sync::mpsc::channel();
+        let mut watcher = RecommendedWatcher::new(
+            move |res: Result<Event, _>| {
+                let _ = notify_tx.send(res);
+            },
+            Config::default(),
+        ).unwrap();
+        watcher.watch(path.as_ref(), RecursiveMode::NonRecursive).unwrap();
+        for res in notify_rx {
             if let Ok(event) = res {
                 let _ = tx.blocking_send(event);
             }
-        },
-        Config::default(),
-    ).unwrap();
-
-    watcher.watch(file_path.lock().unwrap().as_ref(), RecursiveMode::NonRecursive).unwrap();
+        }
+    });
 }
 
 fn spawn_file_watcher(mut rx: mpsc::Receiver<Event>, file_path: Arc<Mutex<String>>, content: Arc<Mutex<String>>) {
