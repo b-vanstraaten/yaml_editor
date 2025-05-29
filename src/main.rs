@@ -25,15 +25,6 @@ fn get_config_file_path() -> Option<std::path::PathBuf> {
     })
 }
 
-fn find_text_position(text: &str, search_text: &str) -> Option<egui::text::CCursorRange> {
-    text.to_lowercase()
-        .find(&search_text.to_lowercase())
-        .map(|index| {
-            let cursor_pos = egui::text::CCursor::new(index);
-            egui::text::CCursorRange::one(cursor_pos)
-        })
-}
-
 fn load_saved_file_path() -> Option<String> {
     get_config_file_path()
         .and_then(|path| fs::read_to_string(path).ok())
@@ -55,7 +46,6 @@ struct YamlEditorApp {
     scroll_marker_key: Option<String>,
     search_query: String,
     search_triggered: bool,
-    current_scroll_offset: f32,  // Add this field
 }
 
 impl YamlEditorApp {
@@ -68,7 +58,6 @@ impl YamlEditorApp {
             scroll_marker_key: None,
             search_query: String::new(),
             search_triggered: false,
-            current_scroll_offset: 0.0,  // Initialize scroll position
         }
     }
 
@@ -129,53 +118,62 @@ impl YamlEditorApp {
                 });
 
                 let text_edit_id = ui.make_persistent_id("raw_editor_text");
+                let scroll_area_id = egui::Id::new("raw_editor_scroll");
 
-                // Compute scroll target rect ahead of time if triggered
-                let mut scroll_to_target: Option<egui::Rect> = None;
+                // Clone content for search operations to avoid borrowing issues
+                let content_for_search = content.clone();
+
+                // Calculate scroll offset if search was triggered
+                let mut target_scroll_offset = None;
                 if self.search_triggered {
                     if let Some(search_text) = &self.scroll_marker_key {
-                        if let Some(pos) = content.to_lowercase().find(&search_text.to_lowercase()) {
+                        if let Some(pos) = content_for_search.to_lowercase().find(&search_text.to_lowercase()) {
                             let font_id = egui::TextStyle::Monospace.resolve(&ctx.style());
                             let row_height = ctx.fonts(|f| f.row_height(&font_id));
-                            let preceding_text = &content[..pos];
+                            let preceding_text = &content_for_search[..pos];
                             let line_number = preceding_text.chars().filter(|&c| c == '\n').count();
                             let target_y = line_number as f32 * row_height;
 
-                            scroll_to_target = Some(egui::Rect::from_min_size(
-                                egui::pos2(0.0, target_y),
-                                egui::vec2(width * WIDTH_RAW, row_height * 2.0),
-                            ));
+                            // Set target scroll offset to center the line
+                            target_scroll_offset = Some(target_y - height * 0.3);
                         }
                     }
                     self.search_triggered = false;
                 }
 
-                // ScrollArea rendering and optional scroll-to-match
-                egui::ScrollArea::vertical()
-                    .id_source("raw_editor_scroll")
-                    .auto_shrink([false; 2])
-                    .show(ui, |ui| {
-                        let text_edit = egui::TextEdit::multiline(content)
-                            .id(text_edit_id)
-                            .desired_width(width * WIDTH_RAW - 20.0)
-                            .font(egui::TextStyle::Monospace);
+                // Create scroll area with potential offset
+                let mut scroll_area = egui::ScrollArea::vertical()
+                    .id_salt(scroll_area_id)
+                    .auto_shrink([false; 2]);
 
-                        let response = ui.add(text_edit);
+                // Apply scroll offset if we have a target
+                if let Some(offset) = target_scroll_offset {
+                    scroll_area = scroll_area.vertical_scroll_offset(offset.max(0.0));
+                }
 
-                        // Force scroll to matched rect (centered)
-                        if let Some(rect) = scroll_to_target.take() {
-                            ui.scroll_to_rect(rect, Some(egui::Align::Center));
-                            ctx.memory_mut(|mem| {
-                                mem.request_focus(text_edit_id);
-                            });
+                scroll_area.show(ui, |ui| {
+                    let text_edit = egui::TextEdit::multiline(content)
+                        .id(text_edit_id)
+                        .desired_width(width * WIDTH_RAW - 20.0)
+                        .font(egui::TextStyle::Monospace);
+
+                    let response = ui.add(text_edit);
+
+                    if response.changed() {
+                        if let Ok(_) = std::fs::write(&*self.file_path.lock().unwrap(), content) {
+                            ctx.request_repaint();
                         }
+                    }
 
-                        if response.changed() {
-                            if let Ok(_) = std::fs::write(&*self.file_path.lock().unwrap(), content) {
-                                ctx.request_repaint();
-                            }
-                        }
-                    });
+                    // Focus the text editor if search was triggered
+                    if target_scroll_offset.is_some() {
+                        ctx.memory_mut(|mem| {
+                            mem.request_focus(text_edit_id);
+                        });
+                    }
+
+                    response
+                });
             },
         );
     }
@@ -188,7 +186,7 @@ impl YamlEditorApp {
             |ui| {
                 ui.label("📂 Collapsible YAML View:");
                 egui::ScrollArea::vertical()
-                    .id_source("collapsible_yaml_scroll")
+                    .id_salt("collapsible_yaml_scroll")
                     .auto_shrink([false; 2])
                     .show(ui, |ui| {
                         ui.vertical(|ui| {
@@ -261,7 +259,7 @@ async fn main() -> Result<(), eframe::Error> {
     save_file_path(&file_path);
 
     let (file_path, content) = init_file_state(&file_path);
-    let (tx, mut rx) = mpsc::channel(100);
+    let (tx, rx) = mpsc::channel(100);
 
     init_file_watcher(tx, &file_path);
     spawn_file_watcher(rx, Arc::clone(&file_path), Arc::clone(&content));
