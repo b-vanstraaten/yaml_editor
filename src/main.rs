@@ -11,8 +11,8 @@ use tokio::sync::mpsc;
 use rfd::FileDialog;
 use directories::ProjectDirs;
 
-/// Add this import to the top of your file:
-use std::thread;
+
+
 
 const WINDOW_HEIGHT: f32 = 1000.;
 const WINDOW_WIDTH: f32 = 600.;
@@ -66,7 +66,7 @@ impl YamlEditorApp {
         }
     }
 
-    fn render_toolbar(&mut self, ui: &mut egui::Ui, ctx: &egui::Context) {
+    fn render_toolbar(&mut self, ui: &mut egui::Ui) {
         ui.vertical(|ui| {
 
             // Line 1: Buttons and checkboxes
@@ -79,19 +79,16 @@ impl YamlEditorApp {
                             let mut cmd = std::process::Command::new(std::env::current_exe().unwrap());
                             cmd.arg(&new_path);
 
-                            #[cfg(unix)]
-                            {
+                            #[cfg(unix)] {
                                 use std::os::unix::process::CommandExt;
-                                cmd.before_exec(|| {
-                                    unsafe {
-                                        libc::setsid(); // new session
-                                    }
+                            unsafe {
+                                cmd.pre_exec(|| {
+                                    libc::setsid(); // new session
                                     Ok(())
                                 });
-                            }
-
-                            #[cfg(windows)]
-                            {
+                            }}
+                            
+                            #[cfg(windows)] {
                                 use std::os::windows::process::CommandExt;
                                 const CREATE_NEW_CONSOLE: u32 = 0x00000010;
                                 cmd.creation_flags(CREATE_NEW_CONSOLE);
@@ -101,9 +98,6 @@ impl YamlEditorApp {
                         }
                     }
                 }
-
-
-
                 ui.checkbox(&mut self.show_raw_editor, "📝 Show Raw Editor");
                 ui.checkbox(&mut self.dark_mode, "🌗 Dark Mode");
             });
@@ -269,7 +263,7 @@ impl App for YamlEditorApp {
         let mut content_owned = self.content.lock().unwrap().clone();
 
         egui::CentralPanel::default().show(ctx, |ui| {
-            self.render_toolbar(ui, ctx);
+            self.render_toolbar(ui);
             ui.separator();
             self.render_editors(ui, ctx, &mut content_owned);
         });
@@ -305,7 +299,7 @@ async fn main() -> Result<(), eframe::Error> {
     spawn_file_watcher(rx, file_path.clone(), content.clone());
 
     eframe::run_native(
-        "YAML Editor",
+        "Barnaby's YAML Editor",
         eframe::NativeOptions {
             viewport: egui::ViewportBuilder::default().with_inner_size([WINDOW_WIDTH, WINDOW_HEIGHT]),
             ..Default::default()
