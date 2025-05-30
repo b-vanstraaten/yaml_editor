@@ -166,9 +166,9 @@ q1:
   new_key: null
 q2:
   x90:
-    t_pulse: 100
-    amplitude: 9.388
-    frequency: 82297658.0458005
+    t_pulse: 101
+    amplitude: 10
+    frequency: 80000000
     phase_corrections: {}
   mg_x90:
     t_pulse: null

@@ -23,4 +23,3 @@ long_description = """
 YAML Viewer is a GUI application for exploring and editing YAML files interactively.
 Originally designed for managing configurations in quantum control experiments.
 """
-
