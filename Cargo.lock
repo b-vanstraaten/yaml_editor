@@ -4144,6 +4144,7 @@ version = "0.1.0"
 dependencies = [
  "directories",
  "eframe",
+ "libc",
  "notify",
  "rfd",
  "serde_yaml",

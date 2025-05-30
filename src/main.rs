@@ -11,6 +11,9 @@ use tokio::sync::mpsc;
 use rfd::FileDialog;
 use directories::ProjectDirs;
 
+/// Add this import to the top of your file:
+use std::thread;
+
 const WINDOW_HEIGHT: f32 = 1000.;
 const WINDOW_WIDTH: f32 = 600.;
 
@@ -68,18 +71,39 @@ impl YamlEditorApp {
 
             // Line 1: Buttons and checkboxes
             ui.horizontal(|ui| {
-                if ui.button("📂 Change File").clicked() {
+
+
+                if ui.button("📂 Load File").clicked() {
                     if let Some(path_buf) = FileDialog::new().add_filter("YAML", &["yaml", "yml"]).pick_file() {
                         if let Ok(new_path) = path_buf.into_os_string().into_string() {
-                            let mut file_path = self.file_path.lock().unwrap();
-                            let mut content = self.content.lock().unwrap();
-                            *file_path = new_path.clone();
-                            *content = load_file(&new_path);
-                            save_file_path(&new_path);
-                            ctx.request_repaint();
+                            let mut cmd = std::process::Command::new(std::env::current_exe().unwrap());
+                            cmd.arg(&new_path);
+
+                            #[cfg(unix)]
+                            {
+                                use std::os::unix::process::CommandExt;
+                                cmd.before_exec(|| {
+                                    unsafe {
+                                        libc::setsid(); // new session
+                                    }
+                                    Ok(())
+                                });
+                            }
+
+                            #[cfg(windows)]
+                            {
+                                use std::os::windows::process::CommandExt;
+                                const CREATE_NEW_CONSOLE: u32 = 0x00000010;
+                                cmd.creation_flags(CREATE_NEW_CONSOLE);
+                            }
+
+                            cmd.spawn().expect("Failed to launch new instance");
                         }
                     }
                 }
+
+
+
                 ui.checkbox(&mut self.show_raw_editor, "📝 Show Raw Editor");
                 ui.checkbox(&mut self.dark_mode, "🌗 Dark Mode");
             });
@@ -257,14 +281,20 @@ impl App for YamlEditorApp {
     }
 }
 
+
 #[tokio::main]
 async fn main() -> Result<(), eframe::Error> {
-    let file_path = load_saved_file_path().or_else(|| {
-        FileDialog::new()
-            .add_filter("YAML", &["yaml", "yml"])
-            .pick_file()
-            .and_then(|p| p.into_os_string().into_string().ok())
-    }).unwrap_or_else(|| std::process::exit(0));
+    let args: Vec<String> = std::env::args().collect();
+    let file_path = if args.len() > 1 {
+        args[1].clone()
+    } else {
+        load_saved_file_path().or_else(|| {
+            FileDialog::new()
+                .add_filter("YAML", &["yaml", "yml"])
+                .pick_file()
+                .and_then(|p| p.into_os_string().into_string().ok())
+        }).unwrap_or_else(|| std::process::exit(0))
+    };
 
     save_file_path(&file_path);
 
@@ -272,8 +302,6 @@ async fn main() -> Result<(), eframe::Error> {
     let (tx, rx) = mpsc::channel(100);
 
     init_file_watcher(tx.clone(), &file_path);
-    // Wrap the receiver in Arc<Mutex<>> for GUI, and clone for watcher
-    let rx = rx; // plain receiver
     spawn_file_watcher(rx, file_path.clone(), content.clone());
 
     eframe::run_native(
@@ -287,6 +315,7 @@ async fn main() -> Result<(), eframe::Error> {
         })
     )
 }
+
 
 fn init_file_state(path: &str) -> (Arc<Mutex<String>>, Arc<Mutex<String>>) {
     let file_path = Arc::new(Mutex::new(path.to_string()));

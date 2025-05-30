@@ -2,7 +2,7 @@ _settings_meta:
   qconstruct_version: 0.8.1
   settings_datetime: 2025-05-06 15:49:13
 global:
-  padding: 4
+  padding: 100
   align: 2
   v_setpoints:
     _ramp_times:
