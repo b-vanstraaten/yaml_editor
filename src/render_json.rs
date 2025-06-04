@@ -1,4 +1,5 @@
 use eframe::egui;
+use serde_json;
 use serde_json::Value;
 use crate::{INDENT_SPACES, UI_SPACE};
 
@@ -6,24 +7,6 @@ pub enum EditableValueRef<'a> {
     Json(&'a mut Value),
 }
 
-fn wrap_all_strings_in_quotes(value: &mut serde_yaml::Value) {
-    match value {
-        serde_yaml::Value::String(s) => {
-            *s = format!("\"{}\"", s.trim_matches('"'));
-        }
-        serde_yaml::Value::Mapping(map) => {
-            for (_, v) in map.iter_mut() {
-                wrap_all_strings_in_quotes(v);
-            }
-        }
-        serde_yaml::Value::Sequence(seq) => {
-            for v in seq.iter_mut() {
-                wrap_all_strings_in_quotes(v);
-            }
-        }
-        _ => {}
-    }
-}
 
 pub(crate) fn render_json_value_with_tracking(
     ui: &mut egui::Ui,

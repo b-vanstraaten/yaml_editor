@@ -1,18 +1,19 @@
 use eframe::egui;
-use crate::{INDENT_SPACES, UI_SPACE};
+use crate::{INDENT_SPACES};
+use yaml_rust::Yaml;
 
 pub(crate) fn render_yaml_value_with_tracking(
     ui: &mut egui::Ui,
-    value: &mut serde_yaml::Value,
+    value: &mut Yaml,
     modified: &mut bool,
     scroll_marker_key: &mut Option<String>,
     content: &str,
     key_path: Vec<String>,
 ) {
     match value {
-        serde_yaml::Value::Mapping(map) => {
-            for (k, v) in map.iter_mut() {
-                if let serde_yaml::Value::String(key_str) = k {
+        Yaml::Hash(map) => {
+            for (k, v) in map {
+                if let Yaml::String(key_str) = k {
                     let mut new_path = key_path.clone();
                     new_path.push(key_str.clone());
                     let full_key = key_str;
@@ -20,7 +21,7 @@ pub(crate) fn render_yaml_value_with_tracking(
                     ui.horizontal(|ui| {
                         ui.add_space(INDENT_SPACES);
                         match v {
-                            serde_yaml::Value::Mapping(_) | serde_yaml::Value::Sequence(_) => {
+                            Yaml::Hash(_) | Yaml::Array(_) => {
                                 egui::CollapsingHeader::new(full_key)
                                     .default_open(false)
                                     .show(ui, |ui| {
@@ -46,35 +47,42 @@ pub(crate) fn render_yaml_value_with_tracking(
 
 fn render_editable_yaml_value(
     ui: &mut egui::Ui,
-    value: &mut serde_yaml::Value,
+    value: &mut Yaml,
     key: &str,
     modified: &mut bool,
     scroll_marker_key: &mut Option<String>,
 ) {
     match value {
-        serde_yaml::Value::String(s) => {
-            let mut val = s.clone(); // no quotes in UI
+        Yaml::String(s) => {
+            let mut val = s.clone();
             if ui.add(egui::TextEdit::singleline(&mut val)).changed() {
-                *value = serde_yaml::Value::String(val);
+                *value = Yaml::String(val);
                 *modified = true;
                 *scroll_marker_key = Some(key.to_string());
             }
         }
-        serde_yaml::Value::Number(n) => {
-            if let Some(f) = n.as_f64() {
+        Yaml::Real(s) => {
+            if let Ok(f) = s.parse::<f64>() {
                 let mut val = f;
                 if ui.add(egui::DragValue::new(&mut val)).changed() {
-                    *value = serde_yaml::from_str(&val.to_string())
-                        .unwrap_or(serde_yaml::Value::Null);
+                    *value = Yaml::Real(val.to_string());
                     *modified = true;
                     *scroll_marker_key = Some(key.to_string());
                 }
             }
         }
-        serde_yaml::Value::Bool(b) => {
+        Yaml::Integer(i) => {
+            let mut val = *i;
+            if ui.add(egui::DragValue::new(&mut val)).changed() {
+                *value = Yaml::Integer(val);
+                *modified = true;
+                *scroll_marker_key = Some(key.to_string());
+            }
+        }
+        Yaml::Boolean(b) => {
             let mut state = *b;
             if ui.checkbox(&mut state, "").changed() {
-                *value = serde_yaml::Value::Bool(state);
+                *value = Yaml::Boolean(state);
                 *modified = true;
                 *scroll_marker_key = Some(key.to_string());
             }

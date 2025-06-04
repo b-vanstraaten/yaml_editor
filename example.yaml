@@ -1,9 +1,9 @@
 _settings_meta:
-  qconstruct_version: 0.8.1
-  settings_datetime: 2025-05-06 15:49:13
+  qconstruct_version: 0.8.3
+  settings_datetime: "2025-05-06 15:49:12"
 global:
   padding: 100
-  align: 2
+  align: ~
   v_setpoints:
     _ramp_times:
       _zero-_02: 100
@@ -11,7 +11,7 @@ global:
       _11_init-_11: 10
       _11_init-_11_iso: 10
       _11-_11_open: 50
-      _11_open-_11: 50
+      _11_open-_11: ~
       _11-_zero: 100
       _zero-_11: 1000
     _zero: {}
@@ -129,41 +129,41 @@ channels:
   q20: q20
   q21: q21
   q22: q22
-  new_key: null
+  new_key: ~
 sensors:
   S_North:
     min: -30
     max: 50
     bins: 201
-    rf_marker: ''
+    rf_marker: ""
   S_East:
     min: -30
     max: 50
     bins: 201
-    rf_marker: ''
+    rf_marker: ""
   S_West:
     min: -30
     max: 35
     bins: 201
-    rf_marker: ''
+    rf_marker: ""
   S_South:
     min: -30
     max: 30
     bins: 201
-    rf_marker: ''
+    rf_marker: ""
 q1:
   x90:
-    t_pulse: 200
+    t_pulse: 100
     amplitude: 30
     frequency: 82297658.0458005
     phase_corrections: {}
   mg_x90:
-    t_pulse: null
-    frequency: null
+    t_pulse: ~
+    frequency: ~
     amplitudes: {}
     phase_offsets: {}
     phase_corrections: {}
-  new_key: null
+  new_key: ~
 q2:
   x90:
     t_pulse: 101
@@ -171,8 +171,8 @@ q2:
     frequency: 80000000
     phase_corrections: {}
   mg_x90:
-    t_pulse: null
-    frequency: null
+    t_pulse: ~
+    frequency: ~
     amplitudes: {}
     phase_offsets: {}
     phase_corrections: {}
@@ -183,8 +183,8 @@ q3:
     frequency: 133086885
     phase_corrections: {}
   mg_x90:
-    t_pulse: null
-    frequency: null
+    t_pulse: ~
+    frequency: ~
     amplitudes: {}
     phase_offsets: {}
     phase_corrections: {}
@@ -195,8 +195,8 @@ q4:
     frequency: 142887670
     phase_corrections: {}
   mg_x90:
-    t_pulse: null
-    frequency: null
+    t_pulse: ~
+    frequency: ~
     amplitudes: {}
     phase_offsets: {}
     phase_corrections: {}
@@ -249,8 +249,8 @@ q7:
     frequency: 145488983
     phase_corrections: {}
   mg_x90:
-    t_pulse: null
-    frequency: null
+    t_pulse: ~
+    frequency: ~
     amplitudes: {}
     phase_offsets: {}
     phase_corrections: {}
@@ -261,8 +261,8 @@ q8:
     frequency: 179127312
     phase_corrections: {}
   mg_x90:
-    t_pulse: null
-    frequency: null
+    t_pulse: ~
+    frequency: ~
     amplitudes: {}
     phase_offsets: {}
     phase_corrections: {}
@@ -273,8 +273,8 @@ q9:
     frequency: 29000000.0
     phase_corrections: {}
   mg_x90:
-    t_pulse: null
-    frequency: null
+    t_pulse: ~
+    frequency: ~
     amplitudes: {}
     phase_offsets: {}
     phase_corrections: {}
@@ -284,10 +284,10 @@ q10:
     amplitude: 12
     frequency: 82297658.0458005
     phase_corrections: {}
-q1,q4:
+"q1,q4":
   shuttle:
     t_01: 10
-    t_10: null
+    t_10: ~
   v_setpoints:
     _ramp_times:
       _zero-_02: 1000.0
@@ -392,11 +392,11 @@ q1,q4:
       amplitude: 6
       frequency: 353_509_139
   cz:
-    t_ramp_in: null
-    t_pulse: null
-    t_ramp_out: null
+    t_ramp_in: ~
+    t_pulse: ~
+    t_ramp_out: ~
     gate_voltages: {}
-q1,q5:
+"q1,q5":
   v_setpoints:
     _ramp_times: {}
     _zero: {}
@@ -420,41 +420,41 @@ q1,q5:
     _11_iso: {}
     pre_read_point: {}
   psb:
-    t_measure: null
-    t_settle: null
-    t_prewait: null
-    thresholdN: null
-    thresholdE: null
-    thresholdW: null
-    thresholdS: null
+    t_measure: ~
+    t_settle: ~
+    t_prewait: ~
+    thresholdN: ~
+    thresholdE: ~
+    thresholdW: ~
+    thresholdS: ~
     invert_result: 1
   crot:
     pulse:
-      t_ramp_in: null
-      t_pulse: null
-      t_ramp_out: null
+      t_ramp_in: ~
+      t_pulse: ~
+      t_ramp_out: ~
       gate_voltages: {}
     drive_q1_q5:
-      t_pulse: null
-      amplitude: null
-      frequency: null
+      t_pulse: ~
+      amplitude: ~
+      frequency: ~
     drive_zq1_q5:
-      t_pulse: null
-      amplitude: null
-      frequency: null
+      t_pulse: ~
+      amplitude: ~
+      frequency: ~
   cz:
-    t_ramp_in: null
-    t_pulse: null
-    t_ramp_out: null
+    t_ramp_in: ~
+    t_pulse: ~
+    t_ramp_out: ~
     gate_voltages: {}
   shuttle:
-    t_01: null
-    t_10: null
-q2,q5:
+    t_01: ~
+    t_10: ~
+"q2,q5":
   cz:
-    t_ramp_in: null
-    t_pulse: null
-    t_ramp_out: null
+    t_ramp_in: ~
+    t_pulse: ~
+    t_ramp_out: ~
     gate_voltages: {}
   v_setpoints:
     _ramp_times: {}
@@ -479,36 +479,36 @@ q2,q5:
     _11_iso: {}
     pre_read_point: {}
   psb:
-    t_measure: null
-    t_settle: null
-    t_prewait: null
-    thresholdN: null
-    thresholdE: null
-    thresholdW: null
-    thresholdS: null
+    t_measure: ~
+    t_settle: ~
+    t_prewait: ~
+    thresholdN: ~
+    thresholdE: ~
+    thresholdW: ~
+    thresholdS: ~
     invert_result: 0
   crot:
     pulse:
-      t_ramp_in: null
-      t_pulse: null
-      t_ramp_out: null
+      t_ramp_in: ~
+      t_pulse: ~
+      t_ramp_out: ~
       gate_voltages: {}
     drive_q2_q5:
-      t_pulse: null
-      amplitude: null
-      frequency: null
+      t_pulse: ~
+      amplitude: ~
+      frequency: ~
     drive_zq2_q5:
-      t_pulse: null
-      amplitude: null
-      frequency: null
+      t_pulse: ~
+      amplitude: ~
+      frequency: ~
   shuttle:
-    t_01: null
-    t_10: null
-q2,q6:
+    t_01: ~
+    t_10: ~
+"q2,q6":
   cz:
-    t_ramp_in: null
-    t_pulse: null
-    t_ramp_out: null
+    t_ramp_in: ~
+    t_pulse: ~
+    t_ramp_out: ~
     gate_voltages: {}
   v_setpoints:
     _ramp_times:
@@ -621,17 +621,17 @@ q2,q6:
       amplitude: 4
       frequency: 300000000.0
     drive_zq2_q6:
-      t_pulse: null
-      amplitude: null
-      frequency: null
+      t_pulse: ~
+      amplitude: ~
+      frequency: ~
   shuttle:
-    t_01: null
-    t_10: null
-q3,q6:
+    t_01: ~
+    t_10: ~
+"q3,q6":
   cz:
-    t_ramp_in: null
-    t_pulse: null
-    t_ramp_out: null
+    t_ramp_in: ~
+    t_pulse: ~
+    t_ramp_out: ~
     gate_voltages: {}
   v_setpoints:
     _ramp_times:
@@ -690,36 +690,36 @@ q3,q6:
     read_point: {}
     pre_read_point: {}
   psb:
-    t_measure: null
-    t_settle: null
-    t_prewait: null
-    thresholdN: null
-    thresholdE: null
-    thresholdW: null
-    thresholdS: null
+    t_measure: ~
+    t_settle: ~
+    t_prewait: ~
+    thresholdN: ~
+    thresholdE: ~
+    thresholdW: ~
+    thresholdS: ~
     invert_result: 0
   crot:
     pulse:
-      t_ramp_in: null
-      t_pulse: null
-      t_ramp_out: null
+      t_ramp_in: ~
+      t_pulse: ~
+      t_ramp_out: ~
       gate_voltages: {}
     drive_q3_q6:
-      t_pulse: null
-      amplitude: null
-      frequency: null
+      t_pulse: ~
+      amplitude: ~
+      frequency: ~
     drive_zq3_q6:
-      t_pulse: null
-      amplitude: null
-      frequency: null
+      t_pulse: ~
+      amplitude: ~
+      frequency: ~
   shuttle:
     t_01: 1000
     t_10: 1000
-q3,q7:
+"q3,q7":
   cz:
-    t_ramp_in: null
-    t_pulse: null
-    t_ramp_out: null
+    t_ramp_in: ~
+    t_pulse: ~
+    t_ramp_out: ~
     gate_voltages: {}
   v_setpoints:
     _ramp_times:
@@ -817,17 +817,17 @@ q3,q7:
       amplitude: 10
       frequency: 352725122
     drive_zq3_q7:
-      t_pulse: null
-      amplitude: null
-      frequency: null
+      t_pulse: ~
+      amplitude: ~
+      frequency: ~
   shuttle:
     t_01: 10
     t_10: 10
-q4,q8:
+"q4,q8":
   cz:
-    t_ramp_in: null
-    t_pulse: null
-    t_ramp_out: null
+    t_ramp_in: ~
+    t_pulse: ~
+    t_ramp_out: ~
     gate_voltages: {}
   v_setpoints:
     _ramp_times:
@@ -942,13 +942,13 @@ q4,q8:
       amplitude: 6
       frequency: 346_954_265
   shuttle:
-    t_01: null
-    t_10: null
-q5,q8:
+    t_01: ~
+    t_10: ~
+"q5,q8":
   cz:
-    t_ramp_in: null
-    t_pulse: null
-    t_ramp_out: null
+    t_ramp_in: ~
+    t_pulse: ~
+    t_ramp_out: ~
     gate_voltages: {}
   v_setpoints:
     _ramp_times:
@@ -996,13 +996,13 @@ q5,q8:
     _11_iso: {}
     pre_read_point: {}
   psb:
-    t_measure: null
-    t_settle: null
-    t_prewait: null
-    thresholdN: null
-    thresholdE: null
-    thresholdW: null
-    thresholdS: null
+    t_measure: ~
+    t_settle: ~
+    t_prewait: ~
+    thresholdN: ~
+    thresholdE: ~
+    thresholdW: ~
+    thresholdS: ~
     invert_result: 0
   crot:
     pulse:
@@ -1017,17 +1017,17 @@ q5,q8:
       amplitude: 10
       frequency: 370000000.0
     drive_zq5_q8:
-      t_pulse: null
-      amplitude: null
-      frequency: null
+      t_pulse: ~
+      amplitude: ~
+      frequency: ~
   shuttle:
     t_01: 10
     t_10: 10
-q5,q9:
+"q5,q9":
   cz:
-    t_ramp_in: null
-    t_pulse: null
-    t_ramp_out: null
+    t_ramp_in: ~
+    t_pulse: ~
+    t_ramp_out: ~
     gate_voltages: {}
   v_setpoints:
     _ramp_times:
@@ -1150,17 +1150,17 @@ q5,q9:
       amplitude: 8
       frequency: 310000000.0
     drive_zq5_q9:
-      t_pulse: null
-      amplitude: null
-      frequency: null
+      t_pulse: ~
+      amplitude: ~
+      frequency: ~
   shuttle:
     t_01: 10
-    t_10: null
-q6,q9:
+    t_10: ~
+"q6,q9":
   cz:
-    t_ramp_in: null
-    t_pulse: null
-    t_ramp_out: null
+    t_ramp_in: ~
+    t_pulse: ~
+    t_ramp_out: ~
     gate_voltages: {}
   v_setpoints:
     _ramp_times:
@@ -1264,26 +1264,26 @@ q6,q9:
     t_prewait: 0.0
   crot:
     pulse:
-      t_ramp_in: null
-      t_pulse: null
-      t_ramp_out: null
+      t_ramp_in: ~
+      t_pulse: ~
+      t_ramp_out: ~
       gate_voltages: {}
     drive_q6_q9:
-      t_pulse: null
-      amplitude: null
-      frequency: null
+      t_pulse: ~
+      amplitude: ~
+      frequency: ~
     drive_zq6_q9:
-      t_pulse: null
-      amplitude: null
-      frequency: null
+      t_pulse: ~
+      amplitude: ~
+      frequency: ~
   shuttle:
-    t_01: null
-    t_10: null
-q6,q10:
+    t_01: ~
+    t_10: ~
+"q6,q10":
   cz:
-    t_ramp_in: null
-    t_pulse: null
-    t_ramp_out: null
+    t_ramp_in: ~
+    t_pulse: ~
+    t_ramp_out: ~
     gate_voltages: {}
   v_setpoints:
     _ramp_times:
@@ -1350,13 +1350,13 @@ q6,q10:
     _11_iso: {}
     pre_read_point: {}
   psb:
-    t_measure: null
-    t_settle: null
-    t_prewait: null
-    thresholdN: null
-    thresholdE: null
-    thresholdW: null
-    thresholdS: null
+    t_measure: ~
+    t_settle: ~
+    t_prewait: ~
+    thresholdN: ~
+    thresholdE: ~
+    thresholdW: ~
+    thresholdS: ~
     invert_result: 0
   crot:
     pulse:
@@ -1373,17 +1373,17 @@ q6,q10:
       amplitude: 8
       frequency: 350000000.0
     drive_zq6_q10:
-      t_pulse: null
-      amplitude: null
-      frequency: null
+      t_pulse: ~
+      amplitude: ~
+      frequency: ~
   shuttle:
-    t_01: null
-    t_10: null
-q7,q10:
+    t_01: ~
+    t_10: ~
+"q7,q10":
   cz:
-    t_ramp_in: null
-    t_pulse: null
-    t_ramp_out: null
+    t_ramp_in: ~
+    t_pulse: ~
+    t_ramp_out: ~
     gate_voltages: {}
   v_setpoints:
     _ramp_times:
@@ -1490,12 +1490,12 @@ q7,q10:
       amplitude: 10
       frequency: 363000000.0
     drive_zq7_q10:
-      t_pulse: null
-      amplitude: null
-      frequency: null
+      t_pulse: ~
+      amplitude: ~
+      frequency: ~
   shuttle:
     t_01: 10
-    t_10: null
+    t_10: ~
 q11:
   x90:
     t_pulse: 315.0

@@ -14,7 +14,7 @@ use std::{
 
 use eframe::{egui, App, Frame};
 use notify::{Config, Event, RecommendedWatcher, RecursiveMode, Watcher};
-use serde_yaml;
+use yaml_rust::{YamlLoader, YamlEmitter};
 use serde_json;
 use toml;
 use tokio::sync::mpsc;
@@ -187,7 +187,6 @@ impl YamlEditorApp {
                             let preceding_text = &content_for_search[..pos];
                             let line_number = preceding_text.chars().filter(|&c| c == '\n').count();
                             let target_y = line_number as f32 * row_height;
-
                             // Set target scroll offset to center the line
                             target_scroll_offset = Some(target_y - height * 0.0);
                         }
@@ -205,28 +204,46 @@ impl YamlEditorApp {
                     scroll_area = scroll_area.vertical_scroll_offset(offset.max(0.0));
                 }
 
+                // Wrap both line number TextEdit and main editor inside the same ScrollArea for synchronized scrolling
                 scroll_area.show(ui, |ui| {
-                    let text_edit = egui::TextEdit::multiline(content)
-                        .id(text_edit_id)
-                        .desired_width(width * RAW_EDITOR_WIDTH_FRACTION - 20.0)
-                        .font(egui::TextStyle::Monospace);
+                    ui.horizontal(|ui| {
+                        let mut numbers = content
+                            .chars()
+                            .fold((1, String::new()), |(line, mut acc), c| {
+                                if c == '\n' {
+                                    acc.push_str(&format!("{:>4}\n", line));
+                                    (line + 1, acc)
+                                } else {
+                                    (line, acc)
+                                }
+                            }).1;
 
-                    let response = ui.add(text_edit);
+                        ui.add(
+                            egui::TextEdit::multiline(&mut numbers)
+                                .desired_width(40.0)
+                                .font(egui::TextStyle::Monospace)
+                                .interactive(false)
+                                .frame(false)
+                        );
 
-                    if response.changed() {
-                        if let Ok(_) = std::fs::write(&*self.file_path.lock().unwrap(), content) {
+                        let editor = egui::TextEdit::multiline(content)
+                            .id(text_edit_id)
+                            .font(egui::TextStyle::Monospace)
+                            .desired_width(width * RAW_EDITOR_WIDTH_FRACTION - 60.0);
+
+                        let response = ui.add(editor);
+
+                        if response.changed() {
+                            let _ = std::fs::write(&*self.file_path.lock().unwrap(), content);
                             ctx.request_repaint();
                         }
-                    }
 
-                    // Focus the text editor if search was triggered
-                    if target_scroll_offset.is_some() {
-                        ctx.memory_mut(|mem| {
-                            mem.request_focus(text_edit_id);
-                        });
-                    }
-
-                    response
+                        if target_scroll_offset.is_some() {
+                            ctx.memory_mut(|mem| {
+                                mem.request_focus(text_edit_id);
+                            });
+                        }
+                    });
                 });
             },
         );
@@ -252,22 +269,31 @@ impl YamlEditorApp {
                         ui.vertical(|ui| {
                             match self.file_type {
                                 FileType::Yaml => {
-                                    match serde_yaml::from_str::<serde_yaml::Value>(&*content) {
-                                        Ok(mut parsed) => {
-                                            let mut modified = false;
-                                            render_yaml::render_yaml_value_with_tracking(
-                                                ui,
-                                                &mut parsed,
-                                                &mut modified,
-                                                &mut self.scroll_marker_key,
-                                                &content,
-                                                vec![]
-                                            );
-                                            ui.add_space(20.0);
+                                    match YamlLoader::load_from_str(&*content) {
+                                        Ok(docs) => {
+                                            if let Some(mut parsed) = docs.into_iter().next() {
+                                                let mut modified = false;
+                                                render_yaml::render_yaml_value_with_tracking(
+                                                    ui,
+                                                    &mut parsed,
+                                                    &mut modified,
+                                                    &mut self.scroll_marker_key,
+                                                    &content,
+                                                    vec![]
+                                                );
+                                                ui.add_space(20.0);
 
-                                            if modified {
-                                                if let Ok(updated) = serde_yaml::to_string(&parsed) {
-                                                    *content = updated;
+                                                if modified {
+                                                    let mut out_str = String::new();
+                                                    {
+                                                        let mut emitter = YamlEmitter::new(&mut out_str);
+                                                        let _ = emitter.dump(&parsed);
+                                                    }
+                                                    // Remove the '---\n' prefix if present
+                                                    if out_str.starts_with("---\n") {
+                                                        out_str = out_str.replacen("---\n", "", 1);
+                                                    }
+                                                    *content = out_str;
                                                     let _ = fs::write(&*self.file_path.lock().unwrap(), &*content);
                                                 }
                                             }

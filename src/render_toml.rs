@@ -1,6 +1,6 @@
 use crate::toml::Value;
 use eframe::egui;
-use crate::{INDENT_SPACES, UI_SPACE};
+use crate::{INDENT_SPACES};
 
 pub(crate) fn render_toml_value_with_tracking(
     ui: &mut egui::Ui,
