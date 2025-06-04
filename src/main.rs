@@ -1,18 +1,25 @@
 // Full Rust YAML Editor with persistent file selection and GUI file picker
+
+mod render_yaml;
+mod render_json;
+mod render_toml;
+mod render_base_types;
+
 use std::{
     fs,
     sync::{Arc, Mutex},
+    path::Path,
 };
+
 
 use eframe::{egui, App, Frame};
 use notify::{Config, Event, RecommendedWatcher, RecursiveMode, Watcher};
-use serde_yaml::Value;
+use serde_yaml;
+use serde_json;
+use toml;
 use tokio::sync::mpsc;
 use rfd::FileDialog;
 use directories::ProjectDirs;
-
-
-
 
 const WINDOW_HEIGHT: f32 = 1000.;
 const WINDOW_WIDTH: f32 = 600.;
@@ -43,6 +50,22 @@ fn save_file_path(path: &str) {
     }
 }
 
+enum FileType {
+    Yaml,
+    Json,
+    Toml,
+    Unknown,
+}
+
+fn detect_file_type(path: &str) -> FileType {
+    match Path::new(path).extension().and_then(|s| s.to_str()).unwrap_or("").to_lowercase().as_str() {
+        "yaml" | "yml" => FileType::Yaml,
+        "json" => FileType::Json,
+        "toml" => FileType::Toml,
+        _ => FileType::Unknown,
+    }
+}
+
 struct YamlEditorApp {
     content: Arc<Mutex<String>>,
     file_path: Arc<Mutex<String>>,
@@ -51,10 +74,12 @@ struct YamlEditorApp {
     scroll_marker_key: Option<String>,
     search_query: String,
     search_triggered: bool,
+    file_type: FileType,
 }
 
 impl YamlEditorApp {
     fn new(file_path: Arc<Mutex<String>>, content: Arc<Mutex<String>>) -> Self {
+        let file_type = detect_file_type(&file_path.lock().unwrap());
         Self {
             content,
             file_path,
@@ -63,6 +88,7 @@ impl YamlEditorApp {
             scroll_marker_key: None,
             search_query: String::new(),
             search_triggered: false,
+            file_type,
         }
     }
 
@@ -74,7 +100,7 @@ impl YamlEditorApp {
 
 
                 if ui.button("📂 Load File").clicked() {
-                    if let Some(path_buf) = FileDialog::new().add_filter("YAML", &["yaml", "yml"]).pick_file() {
+                    if let Some(path_buf) = FileDialog::new().add_filter("YAML", &["yaml", "toml", "json"]).pick_file() {
                         if let Ok(new_path) = path_buf.into_os_string().into_string() {
                             let mut cmd = std::process::Command::new(std::env::current_exe().unwrap());
                             cmd.arg(&new_path);
@@ -212,36 +238,110 @@ impl YamlEditorApp {
             egui::Vec2::new(width * if self.show_raw_editor { 1. - RAW_EDITOR_WIDTH_FRACTION } else { 1.0 }, height),
             egui::Layout::top_down(egui::Align::Min),
             |ui| {
-                ui.label("📂 Collapsible YAML View:");
+                let label = match self.file_type {
+                    FileType::Yaml => "📂 Collapsible YAML View:",
+                    FileType::Json => "📂 Collapsible JSON View:",
+                    FileType::Toml => "📂 Collapsible TOML View:",
+                    FileType::Unknown => "📂 Collapsible View:",
+                };
+                ui.label(label);
                 egui::ScrollArea::vertical()
                     .id_salt("collapsible_yaml_scroll")
                     .auto_shrink([false; 2])
                     .show(ui, |ui| {
                         ui.vertical(|ui| {
-                            match serde_yaml::from_str::<Value>(&*content) {
-                                Ok(mut parsed) => {
-                                    let mut modified = false;
-                                    render_yaml_value_with_tracking(
-                                        ui,
-                                        &mut parsed,
-                                        &mut modified,
-                                        &mut self.scroll_marker_key,
-                                        &content,
-                                        vec![]
-                                    );
-                                    ui.add_space(20.0);
+                            match self.file_type {
+                                FileType::Yaml => {
+                                    match serde_yaml::from_str::<serde_yaml::Value>(&*content) {
+                                        Ok(mut parsed) => {
+                                            let mut modified = false;
+                                            render_yaml::render_yaml_value_with_tracking(
+                                                ui,
+                                                &mut parsed,
+                                                &mut modified,
+                                                &mut self.scroll_marker_key,
+                                                &content,
+                                                vec![]
+                                            );
+                                            ui.add_space(20.0);
 
-                                    if modified {
-                                        if let Ok(updated) = serde_yaml::to_string(&parsed) {
-                                            *content = updated;
-                                            let _ = fs::write(&*self.file_path.lock().unwrap(), &*content);
+                                            if modified {
+                                                if let Ok(updated) = serde_yaml::to_string(&parsed) {
+                                                    *content = updated;
+                                                    let _ = fs::write(&*self.file_path.lock().unwrap(), &*content);
+                                                }
+                                            }
+                                        }
+                                        Err(err) => {
+                                            ui.colored_label(
+                                                egui::Color32::RED,
+                                                format!("⚠️ Invalid YAML: {err}"),
+                                            );
                                         }
                                     }
                                 }
-                                Err(err) => {
+                                FileType::Json => {
+                                    match serde_json::from_str::<serde_json::Value>(&*content) {
+                                        Ok(mut parsed) => {
+                                            let mut modified = false;
+                                            render_json::render_json_value_with_tracking(
+                                                ui,
+                                                &mut parsed,
+                                                &mut modified,
+                                                &mut self.scroll_marker_key,
+                                                &content,
+                                                vec![]
+                                            );
+                                            ui.add_space(20.0);
+
+                                            if modified {
+                                                if let Ok(updated) = serde_json::to_string_pretty(&parsed) {
+                                                    *content = updated;
+                                                    let _ = fs::write(&*self.file_path.lock().unwrap(), &*content);
+                                                }
+                                            }
+                                        }
+                                        Err(err) => {
+                                            ui.colored_label(
+                                                egui::Color32::RED,
+                                                format!("⚠️ Invalid JSON: {err}"),
+                                            );
+                                        }
+                                    }
+                                }
+                                FileType::Toml => {
+                                    match content.parse::<toml::Value>() {
+                                        Ok(mut parsed) => {
+                                            let mut modified = false;
+                                            render_toml::render_toml_value_with_tracking(
+                                                ui,
+                                                &mut parsed,
+                                                &mut modified,
+                                                &mut self.scroll_marker_key,
+                                                &content,
+                                                vec![]
+                                            );
+                                            ui.add_space(20.0);
+
+                                            if modified {
+                                                if let Ok(updated) = toml::to_string_pretty(&parsed) {
+                                                    *content = updated;
+                                                    let _ = fs::write(&*self.file_path.lock().unwrap(), &*content);
+                                                }
+                                            }
+                                        }
+                                        Err(err) => {
+                                            ui.colored_label(
+                                                egui::Color32::RED,
+                                                format!("⚠️ Invalid TOML: {err}"),
+                                            );
+                                        }
+                                    }
+                                }
+                                FileType::Unknown => {
                                     ui.colored_label(
                                         egui::Color32::RED,
-                                        format!("⚠️ Invalid YAML: {err}"),
+                                        "⚠️ Unknown file type.",
                                     );
                                 }
                             }
@@ -353,83 +453,6 @@ fn spawn_file_watcher(mut rx: mpsc::Receiver<Event>, file_path: Arc<Mutex<String
     });
 }
 
-fn render_yaml_value_with_tracking(
-    ui: &mut egui::Ui,
-    value: &mut Value,
-    modified: &mut bool,
-    scroll_marker_key: &mut Option<String>,
-    content: &str,
-    key_path: Vec<String>,
-) {
-    match value {
-        Value::Mapping(map) => {
-            for (k, v) in map.iter_mut() {
-                if let Value::String(key_str) = k {
-                    let mut new_path = key_path.clone();
-                    new_path.push(key_str.clone());
-                    let full_key = key_str;
 
-                    match v {
-                        Value::Mapping(_) | Value::Sequence(_) => {
-                            ui.add_space(UI_SPACE);
-                            ui.horizontal(|ui| {
-                                ui.add_space(INDENT_SPACES);
-                                egui::CollapsingHeader::new(full_key)
-                                    .default_open(false)
-                                    .show(ui, |ui| {
-                                        render_yaml_value_with_tracking(
-                                            ui,
-                                            v,
-                                            modified,
-                                            scroll_marker_key,
-                                            content,
-                                            new_path,
-                                        );
-                                    });
-                            });
-                        }
-                        Value::String(s) => {
-                            ui.horizontal(|ui| {
-                                ui.add_space(INDENT_SPACES);
-                                ui.label(format!("{}:", full_key));
-                                let response = ui.add(egui::TextEdit::singleline(s));
-                                if response.changed() {
-                                    *modified = true;
-                                    *scroll_marker_key = Some(full_key.to_string());
-                                }
-                            });
-                        }
-                        Value::Number(n) => {
-                            if let Some(f) = n.as_f64() {
-                                let mut val = f;
-                                ui.horizontal(|ui| {
-                                    ui.add_space(INDENT_SPACES);
-                                    ui.label(format!("{}:", full_key));
-                                    if ui.add(egui::DragValue::new(&mut val)).changed() {
-                                        *v = serde_yaml::from_str(&val.to_string()).unwrap_or(Value::Null);
-                                        *modified = true;
-                                        *scroll_marker_key = Some(full_key.to_string());
-                                    }
-                                });
-                            }
-                        }
-                        Value::Bool(b) => {
-                            let mut state = *b;
-                            ui.horizontal(|ui| {
-                                ui.add_space(INDENT_SPACES);
-                                ui.label(format!("{}:", full_key));
-                                if ui.checkbox(&mut state, "").changed() {
-                                    *v = Value::Bool(state);
-                                    *modified = true;
-                                    *scroll_marker_key = Some(full_key.to_string());
-                                }
-                            });
-                        }
-                        _ => {}
-                    }
-                }
-            }
-        }
-        _ => {}
-    }
-}
+
+
