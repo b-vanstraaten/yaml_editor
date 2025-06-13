@@ -46,7 +46,7 @@ pub(crate) fn render_yaml_value_with_tracking(
             let key_id = egui::Id::new("new_key_input").with(ui.id());
             let value_id = egui::Id::new("new_value_input").with(ui.id());
 
-            egui::CollapsingHeader::new("Add New Field")
+            egui::CollapsingHeader::new("Add new field")
                 .default_open(false)
                 .show(ui, |ui| {
                     let mut key_input = ui

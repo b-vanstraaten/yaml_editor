@@ -1,7 +1,6 @@
 _settings_meta:
   qconstruct_version: 0.8.3
   settings_datetime: "2025-05-06 15:49:12"
-
 global:
   padding: 100
   align: ~
@@ -165,7 +164,8 @@ q1:
     amplitudes: {}
     phase_offsets: {}
     phase_corrections: {}
-  new_key: "10"
+    "t_test ": 10
+  new_key: ""
 q2:
   x90:
     t_pulse: 101

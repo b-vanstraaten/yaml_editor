@@ -12,6 +12,9 @@ pub(crate) fn render_toml_value_with_tracking(
 ) {
     match value {
         Value::Table(table) => {
+            // Mutable statics for new key/val input fields
+            static mut NEW_KEY: String = String::new();
+            static mut NEW_VAL: String = String::new();
             for (key, v) in table.iter_mut() {
                 let mut new_path = key_path.clone();
                 new_path.push(key.to_string());
@@ -36,6 +39,27 @@ pub(crate) fn render_toml_value_with_tracking(
                     }
                 });
             }
+            // Section for adding a new key-value pair
+            ui.separator();
+            ui.horizontal(|ui| {
+                unsafe {
+                    ui.colored_label(egui::Color32::GRAY, "New Key:");
+                    let key_changed = ui.text_edit_singleline(&mut NEW_KEY).changed();
+                    ui.colored_label(egui::Color32::GRAY, "Value:");
+                    let val_changed = ui.text_edit_singleline(&mut NEW_VAL).changed();
+                    if key_changed || val_changed {
+                        if !NEW_KEY.trim().is_empty() && !table.contains_key(&NEW_KEY) {
+                            if let Some(parsed_val) = value_from_string(&NEW_VAL) {
+                                table.insert(NEW_KEY.clone(), parsed_val);
+                                *modified = true;
+                                *scroll_marker_key = Some(NEW_KEY.clone());
+                                NEW_KEY.clear();
+                                NEW_VAL.clear();
+                            }
+                        }
+                    }
+                }
+            });
         }
         Value::Array(arr) => {
             for (idx, v) in arr.iter_mut().enumerate() {
@@ -141,4 +165,21 @@ fn unescape_string(s: &str) -> String {
         }
     }
     result
+}
+
+fn value_from_string(input: &str) -> Option<Value> {
+    if input.eq_ignore_ascii_case("true") {
+        return Some(Value::Boolean(true));
+    }
+    if input.eq_ignore_ascii_case("false") {
+        return Some(Value::Boolean(false));
+    }
+    if let Ok(int_val) = input.parse::<i64>() {
+        return Some(Value::Integer(int_val));
+    }
+    if let Ok(float_val) = input.parse::<f64>() {
+        return Some(Value::Float(float_val));
+    }
+    let stripped = input.strip_prefix('"').and_then(|s| s.strip_suffix('"')).unwrap_or(input);
+    Some(Value::String(stripped.to_string()))
 }
