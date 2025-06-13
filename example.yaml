@@ -1,6 +1,7 @@
 _settings_meta:
   qconstruct_version: 0.8.3
   settings_datetime: "2025-05-06 15:49:12"
+
 global:
   padding: 100
   align: ~
@@ -106,6 +107,7 @@ global:
     _01: {}
     _10: {}
     _shuttle_AC: {}
+  test: 100
 channels:
   q1: q1
   q2: q2
@@ -163,7 +165,7 @@ q1:
     amplitudes: {}
     phase_offsets: {}
     phase_corrections: {}
-  new_key: ""
+  new_key: "10"
 q2:
   x90:
     t_pulse: 101
