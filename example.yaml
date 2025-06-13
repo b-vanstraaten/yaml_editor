@@ -11,7 +11,7 @@ global:
       _11_init-_11: 10
       _11_init-_11_iso: 10
       _11-_11_open: 50
-      _11_open-_11: ~
+      _11_open-_11: 5
       _11-_zero: 100
       _zero-_11: 1000
     _zero: {}
@@ -158,12 +158,12 @@ q1:
     frequency: 82297658.0458005
     phase_corrections: {}
   mg_x90:
-    t_pulse: ~
-    frequency: ~
+    t_pulse: 10
+    frequency: 50
     amplitudes: {}
     phase_offsets: {}
     phase_corrections: {}
-  new_key: ~
+  new_key: ""
 q2:
   x90:
     t_pulse: 101
@@ -171,7 +171,7 @@ q2:
     frequency: 80000000
     phase_corrections: {}
   mg_x90:
-    t_pulse: ~
+    t_pulse: "10"
     frequency: ~
     amplitudes: {}
     phase_offsets: {}
@@ -183,7 +183,7 @@ q3:
     frequency: 133086885
     phase_corrections: {}
   mg_x90:
-    t_pulse: ~
+    t_pulse: "0"
     frequency: ~
     amplitudes: {}
     phase_offsets: {}

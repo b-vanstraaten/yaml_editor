@@ -87,6 +87,25 @@ fn render_editable_yaml_value(
                 *scroll_marker_key = Some(key.to_string());
             }
         }
+        Yaml::Null => {
+            let mut input = String::new();
+            if ui.add(egui::TextEdit::singleline(&mut input).hint_text("null")).changed() {
+                // Try to infer type
+                if input.eq_ignore_ascii_case("true") {
+                    *value = Yaml::Boolean(true);
+                } else if input.eq_ignore_ascii_case("false") {
+                    *value = Yaml::Boolean(false);
+                } else if let Ok(i) = input.parse::<i64>() {
+                    *value = Yaml::Integer(i);
+                } else if let Ok(f) = input.parse::<f64>() {
+                    *value = Yaml::Real(f.to_string());
+                } else {
+                    *value = Yaml::String(input.clone());
+                }
+                *modified = true;
+                *scroll_marker_key = Some(key.to_string());
+            }
+        }
         _ => {
             ui.label(format!("{:?}", value)); // fallback for other types
         }
