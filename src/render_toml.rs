@@ -110,3 +110,35 @@ fn render_editable_toml_value(
         _ => {}
     }
 }
+/// Unescapes TOML-style escape sequences in a string, such as `\n`, `\t`, `\\`, `\"`, and unicode escapes like `\uXXXX`.
+fn unescape_string(s: &str) -> String {
+    let mut result = String::new();
+    let mut chars = s.chars().peekable();
+    while let Some(c) = chars.next() {
+        if c == '\\' {
+            match chars.next() {
+                Some('n') => result.push('\n'),
+                Some('t') => result.push('\t'),
+                Some('r') => result.push('\r'),
+                Some('\\') => result.push('\\'),
+                Some('"') => result.push('"'),
+                Some('u') => {
+                    let unicode: String = chars.by_ref().take(4).collect();
+                    if let Ok(code) = u16::from_str_radix(&unicode, 16) {
+                        if let Some(ch) = std::char::from_u32(code as u32) {
+                            result.push(ch);
+                        }
+                    }
+                }
+                Some(other) => {
+                    result.push('\\');
+                    result.push(other);
+                }
+                None => result.push('\\'),
+            }
+        } else {
+            result.push(c);
+        }
+    }
+    result
+}
